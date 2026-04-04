@@ -1,0 +1,42 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <title>Submit Ticket</title>
+  <link rel="stylesheet" href="styles.css">
+</head>
+<body>
+
+  <main class="container">
+    <h1>Submit IT Ticket</h1>
+
+    <form id="ticketForm">
+
+      <label for="title">Issue Title</label>
+      <input type="text" id="title" required>
+
+      <label for="description">Description</label>
+      <textarea id="description" required></textarea>
+
+      <label for="priority">Priority</label>
+      <select id="priority">
+        <option value="Low">Low</option>
+        <option value="Medium">Medium</option>
+        <option value="High">High</option>
+      </select>
+
+      <label for="department">Department</label>
+      <select id="department" required>
+        <option value="">-- Select Department --</option>
+      </select>
+
+      <button type="submit">Submit Ticket</button>
+
+    </form>
+  </main>
+
+  <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js"></script>
+  <script src="app.js"></script>
+
+</body>
+</html>
