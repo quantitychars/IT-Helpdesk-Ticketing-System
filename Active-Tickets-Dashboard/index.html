@@ -1,11 +1,531 @@
 <!DOCTYPE html>
-<html lang="en">
+<html lang="en" data-theme="light">
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Document</title>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>IT Helpdesk — Active Tickets Dashboard</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@300..700&display=swap" rel="stylesheet">
+<script src="https://unpkg.com/lucide@latest/dist/umd/lucide.min.js"></script>
+<style>
+:root,[data-theme="light"]{
+  --text-xs:clamp(.75rem,.7rem + .25vw,.875rem);
+  --text-sm:clamp(.875rem,.8rem + .35vw,1rem);
+  --text-base:clamp(1rem,.95rem + .25vw,1.125rem);
+  --text-lg:clamp(1.125rem,1rem + .75vw,1.5rem);
+  --text-xl:clamp(1.5rem,1.2rem + 1.25vw,2.25rem);
+  --sp1:.25rem;--sp2:.5rem;--sp3:.75rem;--sp4:1rem;--sp5:1.25rem;--sp6:1.5rem;
+  --sp8:2rem;--sp10:2.5rem;--sp12:3rem;--sp16:4rem;
+  --r-sm:.375rem;--r-md:.5rem;--r-lg:.75rem;--r-xl:1rem;--r-full:9999px;
+  --tr:180ms cubic-bezier(.16,1,.3,1);
+  --bg:#f7f6f2;--sur:#f9f8f5;--sur2:#fbfbf9;--sur-off:#f3f0ec;
+  --bor:rgba(40,37,29,.12);--div:rgba(40,37,29,.08);
+  --tx:#28251d;--tx-m:#7a7974;--tx-f:#bab9b4;--tx-inv:#f9f8f4;
+  --pri:#01696f;--pri-h:#0c4e54;--pri-hl:#cedcd8;
+  --suc:#437a22;--suc-hl:#d4dfcc;
+  --warn:#964219;--warn-hl:#ddcfc6;
+  --gol:#d19900;--gol-hl:#e9e0c6;
+  --err:#a12c7b;--err-hl:#e0ced7;
+  --not:#a13544;--not-hl:#dececb;
+  --sh-sm:0 1px 2px oklch(.2 .01 80/.06);
+  --sh-md:0 4px 12px oklch(.2 .01 80/.08);
+  --sh-lg:0 12px 32px oklch(.2 .01 80/.12);
+}
+[data-theme="dark"]{
+  --bg:#171614;--sur:#1c1b19;--sur2:#201f1d;--sur-off:#1d1c1a;
+  --bor:rgba(205,204,202,.1);--div:rgba(205,204,202,.06);
+  --tx:#cdccca;--tx-m:#797876;--tx-f:#5a5957;
+  --pri:#4f98a3;--pri-h:#227f8b;--pri-hl:#313b3b;
+  --suc:#6daa45;--suc-hl:#3a4435;
+  --warn:#bb653b;--warn-hl:#564942;
+  --gol:#e8af34;--gol-hl:#4d4332;
+  --err:#d163a7;--err-hl:#4c3d46;
+  --not:#dd6974;--not-hl:#574848;
+  --sh-sm:0 1px 2px oklch(0 0 0/.2);--sh-md:0 4px 12px oklch(0 0 0/.3);
+  --sh-lg:0 12px 32px oklch(0 0 0/.4);
+}
+@media(prefers-color-scheme:dark){:root:not([data-theme]){
+  --bg:#171614;--sur:#1c1b19;--sur2:#201f1d;--sur-off:#1d1c1a;
+  --bor:rgba(205,204,202,.1);--div:rgba(205,204,202,.06);
+  --tx:#cdccca;--tx-m:#797876;--tx-f:#5a5957;
+  --pri:#4f98a3;--pri-h:#227f8b;--pri-hl:#313b3b;
+  --suc:#6daa45;--suc-hl:#3a4435;
+  --warn:#bb653b;--warn-hl:#564942;
+  --gol:#e8af34;--gol-hl:#4d4332;
+  --err:#d163a7;--err-hl:#4c3d46;
+  --not:#dd6974;--not-hl:#574848;
+}}
+*,*::before,*::after{box-sizing:border-box;margin:0;padding:0}
+html{scroll-behavior:smooth;-webkit-font-smoothing:antialiased}
+body{min-height:100dvh;font-family:'Inter',system-ui,sans-serif;
+  font-size:var(--text-base);color:var(--tx);background:var(--bg);line-height:1.6}
+svg,img{display:block;max-width:100%}
+input,select,button,textarea{font:inherit;color:inherit}
+button{cursor:pointer;background:none;border:none}
+a,button,[role=button],input,select,textarea{
+  transition:color var(--tr),background var(--tr),border-color var(--tr),box-shadow var(--tr),opacity var(--tr)}
+:focus-visible{outline:2px solid var(--pri);outline-offset:3px;border-radius:var(--r-sm)}
+.sr-only{position:absolute;width:1px;height:1px;padding:0;margin:-1px;overflow:hidden;
+  clip:rect(0,0,0,0);white-space:nowrap;border-width:0}
+@media(prefers-reduced-motion:reduce){*,*::before,*::after{
+  animation-duration:.01ms!important;transition-duration:.01ms!important}}
+
+/* ── LAYOUT ────────────────────────────────────────────────── */
+.app{display:flex;flex-direction:column;min-height:100dvh}
+nav.topnav{background:var(--sur);border-bottom:1px solid var(--bor);
+  position:sticky;top:0;z-index:100;box-shadow:var(--sh-sm)}
+.nav-inner{max-width:1280px;margin-inline:auto;padding:0 var(--sp6);
+  display:flex;align-items:center;height:56px;gap:var(--sp6)}
+.nav-logo{display:flex;align-items:center;gap:var(--sp2);
+  font-weight:700;font-size:var(--text-sm);color:var(--tx);text-decoration:none}
+.nav-links{display:flex;gap:var(--sp1);margin-left:auto}
+.nav-link{display:flex;align-items:center;gap:var(--sp2);padding:var(--sp2) var(--sp3);
+  border-radius:var(--r-md);font-size:var(--text-sm);font-weight:500;
+  color:var(--tx-m);text-decoration:none;white-space:nowrap}
+.nav-link:hover{background:var(--sur-off);color:var(--tx)}
+.nav-link.active{background:var(--pri-hl);color:var(--pri)}
+.btn-icon{display:flex;align-items:center;justify-content:center;
+  width:36px;height:36px;border-radius:var(--r-md);color:var(--tx-m)}
+.btn-icon:hover{background:var(--sur-off);color:var(--tx)}
+main{flex:1;max-width:1280px;margin-inline:auto;
+  padding:var(--sp8) var(--sp6);width:100%}
+.page-hdr{display:flex;align-items:flex-start;
+  justify-content:space-between;gap:var(--sp4);
+  margin-bottom:var(--sp8);flex-wrap:wrap}
+.page-hdr h1{font-size:var(--text-xl);font-weight:700}
+.page-hdr p{color:var(--tx-m);margin-top:var(--sp1);font-size:var(--text-sm)}
+
+/* ── KPI CARDS ─────────────────────────────────────────────── */
+.kpi-row{display:grid;grid-template-columns:repeat(auto-fill,minmax(min(220px,100%),1fr));
+  gap:var(--sp4);margin-bottom:var(--sp8)}
+.kpi{background:var(--sur);border:1px solid var(--bor);border-radius:var(--r-xl);
+  padding:var(--sp5) var(--sp6);box-shadow:var(--sh-sm)}
+.kpi-label{font-size:var(--text-xs);font-weight:600;text-transform:uppercase;
+  letter-spacing:.06em;color:var(--tx-m)}
+.kpi-val{font-size:clamp(1.75rem,4vw,2.5rem);font-weight:700;
+  font-variant-numeric:tabular-nums;margin-top:var(--sp1);line-height:1}
+.kpi-val.open   { color:var(--not) }
+.kpi-val.inprog { color:var(--gol) }
+.kpi-val.res    { color:var(--suc) }
+.kpi-val.all    { color:var(--pri) }
+
+/* ── TOOLBAR ───────────────────────────────────────────────── */
+.toolbar{display:flex;gap:var(--sp3);margin-bottom:var(--sp5);flex-wrap:wrap;align-items:center}
+.search-inp{padding:var(--sp3) var(--sp4);border:1px solid var(--bor);
+  border-radius:var(--r-md);background:var(--sur);
+  font-size:var(--text-sm);min-width:220px;flex:1;max-width:360px}
+.search-inp:hover{border-color:var(--pri)}
+.search-inp:focus{outline:2px solid var(--pri);outline-offset:2px}
+.filter-sel{padding:var(--sp3) var(--sp4);border:1px solid var(--bor);
+  border-radius:var(--r-md);background:var(--sur);
+  font-size:var(--text-sm);cursor:pointer}
+.filter-sel:hover{border-color:var(--pri)}
+.filter-sel:focus{outline:2px solid var(--pri);outline-offset:2px}
+.btn-reload{display:flex;align-items:center;gap:var(--sp2);
+  padding:var(--sp3) var(--sp4);border:1px solid var(--bor);
+  border-radius:var(--r-md);font-size:var(--text-sm);
+  background:var(--sur);margin-left:auto}
+.btn-reload:hover{background:var(--sur-off);border-color:var(--pri)}
+
+/* ── TABLE ─────────────────────────────────────────────────── */
+.table-wrap{overflow-x:auto;border:1px solid var(--bor);
+  border-radius:var(--r-xl);box-shadow:var(--sh-sm);background:var(--sur)}
+table{border-collapse:collapse;width:100%;font-variant-numeric:tabular-nums}
+thead{background:var(--sur-off)}
+th{padding:var(--sp3) var(--sp4);font-size:var(--text-xs);font-weight:600;
+  text-transform:uppercase;letter-spacing:.06em;color:var(--tx-m);
+  text-align:left;border-bottom:1px solid var(--bor);white-space:nowrap}
+td{padding:var(--sp3) var(--sp4);font-size:var(--text-sm);
+  border-bottom:1px solid var(--div);vertical-align:middle}
+tr:last-child td{border-bottom:none}
+tbody tr:hover{background:var(--sur-off)}
+tbody tr.deleting{opacity:.4;pointer-events:none;transition:opacity .3s}
+
+/* PRIORITY BADGES */
+.badge{display:inline-flex;align-items:center;gap:.3em;
+  padding:.2em .65em;border-radius:var(--r-full);
+  font-size:var(--text-xs);font-weight:600;white-space:nowrap}
+.badge-h{background:var(--err-hl);color:var(--err)}
+.badge-m{background:var(--warn-hl);color:var(--warn)}
+.badge-l{background:var(--suc-hl);color:var(--suc)}
+
+/* STATUS SELECT */
+.status-sel{padding:.3em .6em;border:1px solid var(--bor);
+  border-radius:var(--r-md);font-size:var(--text-xs);
+  font-weight:600;background:var(--sur2);cursor:pointer;
+  min-width:130px}
+.status-sel.s-open   {color:var(--not)}
+.status-sel.s-inprog {color:var(--gol)}
+.status-sel.s-res    {color:var(--suc)}
+.status-sel:focus{outline:2px solid var(--pri);outline-offset:2px}
+
+/* DELETE BUTTON */
+.btn-del{display:flex;align-items:center;justify-content:center;
+  width:32px;height:32px;border-radius:var(--r-md);color:var(--tx-f)}
+.btn-del:hover{background:var(--err-hl);color:var(--err)}
+
+/* EMPTY / SKELETON */
+.empty-cell{padding:var(--sp16) var(--sp8);text-align:center;color:var(--tx-m)}
+.empty-cell h3{color:var(--tx);margin-bottom:var(--sp2)}
+@keyframes shim{0%{background-position:-200% 0}100%{background-position:200% 0}}
+.skel-row td{background:none}
+.skel-row .skel{height:.9em;border-radius:var(--r-sm);
+  background:linear-gradient(90deg,var(--sur-off) 25%,var(--sur) 50%,var(--sur-off) 75%);
+  background-size:200% 100%;animation:shim 1.5s ease-in-out infinite}
+
+/* TOAST */
+.toast{position:fixed;bottom:var(--sp8);right:var(--sp8);z-index:999;
+  display:flex;align-items:center;gap:var(--sp3);
+  padding:var(--sp3) var(--sp5);border-radius:var(--r-lg);
+  font-size:var(--text-sm);font-weight:600;
+  box-shadow:var(--sh-lg);opacity:0;pointer-events:none;
+  transform:translateY(8px);transition:opacity .25s,transform .25s}
+.toast.show{opacity:1;pointer-events:auto;transform:translateY(0)}
+.toast.ok{background:var(--suc);color:#fff}
+.toast.err{background:var(--err);color:#fff}
+
+/* CONFIRM MODAL */
+.overlay{position:fixed;inset:0;background:oklch(.1 .01 80/.45);
+  z-index:200;display:flex;align-items:center;justify-content:center;
+  opacity:0;pointer-events:none;transition:opacity var(--tr)}
+.overlay.show{opacity:1;pointer-events:auto}
+.modal{background:var(--sur);border:1px solid var(--bor);
+  border-radius:var(--r-xl);padding:var(--sp8);max-width:420px;width:90%;
+  box-shadow:var(--sh-lg);transform:translateY(8px);transition:transform var(--tr)}
+.overlay.show .modal{transform:translateY(0)}
+.modal h2{font-size:var(--text-lg);font-weight:700;margin-bottom:var(--sp3)}
+.modal p{font-size:var(--text-sm);color:var(--tx-m);margin-bottom:var(--sp6)}
+.modal-btns{display:flex;gap:var(--sp3);justify-content:flex-end}
+.btn-cancel{padding:var(--sp2) var(--sp5);border:1px solid var(--bor);
+  border-radius:var(--r-md);font-size:var(--text-sm);background:var(--sur)}
+.btn-cancel:hover{background:var(--sur-off)}
+.btn-confirm{padding:var(--sp2) var(--sp5);border-radius:var(--r-md);
+  font-size:var(--text-sm);font-weight:600;background:var(--err);color:#fff}
+.btn-confirm:hover{opacity:.85}
+
+@media(max-width:768px){
+  main{padding:var(--sp6) var(--sp4)}
+  .nav-link span{display:none}
+  .kpi-row{grid-template-columns:1fr 1fr}
+  .page-hdr{flex-direction:column;gap:var(--sp3)}
+}
+</style>
 </head>
 <body>
-    
+<div class="app">
+
+<!-- NAV -->
+<nav class="topnav" aria-label="Main navigation">
+  <div class="nav-inner">
+    <a href="index.html" class="nav-logo" aria-label="IT Helpdesk home">
+      <svg width="28" height="28" viewBox="0 0 28 28" fill="none" aria-hidden="true">
+        <rect width="28" height="28" rx="7" fill="var(--pri)"/>
+        <rect x="7" y="13" width="14" height="2" rx="1" fill="#fff"/>
+        <rect x="13" y="7" width="2" height="14" rx="1" fill="#fff"/>
+        <circle cx="14" cy="14" r="5" stroke="#fff" stroke-width="1.5" fill="none"/>
+      </svg>
+      <span>IT Helpdesk</span>
+    </a>
+    <nav class="nav-links">
+      <a href="index.html"         class="nav-link active" aria-current="page"><i data-lucide="layout-dashboard" width="16" height="16"></i><span>Dashboard</span></a>
+      <a href="create-ticket.html" class="nav-link"><i data-lucide="plus-circle" width="16" height="16"></i><span>Submit Ticket</span></a>
+      <a href="departments.html"   class="nav-link"><i data-lucide="building-2" width="16" height="16"></i><span>Departments</span></a>
+      <a href="faq.html"           class="nav-link"><i data-lucide="help-circle" width="16" height="16"></i><span>FAQ</span></a>
+    </nav>
+    <button class="btn-icon" data-theme-toggle aria-label="Toggle dark mode">
+      <i data-lucide="sun" width="18" height="18"></i>
+    </button>
+  </div>
+</nav>
+
+<main id="main-content">
+  <a href="#main-content" class="sr-only">Skip to main content</a>
+
+  <div class="page-hdr">
+    <div>
+      <h1>Active Tickets</h1>
+      <p>Read, update status, and delete tickets — <strong>Olena</strong></p>
+    </div>
+    <a href="create-ticket.html" style="display:flex;align-items:center;gap:var(--sp2);
+      padding:var(--sp3) var(--sp5);background:var(--pri);color:#fff;
+      border-radius:var(--r-md);font-size:var(--text-sm);font-weight:600;
+      text-decoration:none;white-space:nowrap;flex-shrink:0">
+      <i data-lucide="plus" width="16" height="16"></i>New Ticket
+    </a>
+  </div>
+
+  <!-- KPI CARDS (animate on load) -->
+  <div class="kpi-row" role="region" aria-label="Ticket summary">
+    <div class="kpi"><p class="kpi-label">Total Tickets</p><p class="kpi-val all" id="kpi-all">–</p></div>
+    <div class="kpi"><p class="kpi-label">Open</p><p class="kpi-val open" id="kpi-open">–</p></div>
+    <div class="kpi"><p class="kpi-label">In Progress</p><p class="kpi-val inprog" id="kpi-inprog">–</p></div>
+    <div class="kpi"><p class="kpi-label">Resolved</p><p class="kpi-val res" id="kpi-res">–</p></div>
+  </div>
+
+  <!-- TOOLBAR -->
+  <div class="toolbar">
+    <input type="search" class="search-inp" id="search"
+      placeholder="Search by title, submitter, department…"
+      aria-label="Search tickets">
+    <select class="filter-sel" id="f-status" aria-label="Filter by status">
+      <option value="">All statuses</option>
+      <option value="Open">Open</option>
+      <option value="In-Progress">In Progress</option>
+      <option value="Resolved">Resolved</option>
+    </select>
+    <select class="filter-sel" id="f-priority" aria-label="Filter by priority">
+      <option value="">All priorities</option>
+      <option value="High">High</option>
+      <option value="Medium">Medium</option>
+      <option value="Low">Low</option>
+    </select>
+    <button class="btn-reload" id="reload-btn" aria-label="Reload tickets">
+      <i data-lucide="refresh-cw" width="15" height="15"></i>Reload
+    </button>
+  </div>
+
+  <!-- TABLE -->
+  <div class="table-wrap">
+    <table aria-label="IT support tickets">
+      <thead>
+        <tr>
+          <th scope="col">Ticket ID</th>
+          <th scope="col">Issue Title</th>
+          <th scope="col">Priority</th>
+          <th scope="col">Department</th>
+          <th scope="col">Submitter</th>
+          <th scope="col">Created</th>
+          <th scope="col">Actions</th>
+        </tr>
+      </thead>
+      <tbody id="tbody">
+        <!-- skeleton rows -->
+        <tr class="skel-row"><td><div class="skel" style="width:40px"></div></td><td><div class="skel" style="width:180px"></div></td><td><div class="skel" style="width:60px"></div></td><td><div class="skel" style="width:120px"></div></td><td><div class="skel" style="width:100px"></div></td><td><div class="skel" style="width:80px"></div></td><td><div class="skel" style="width:150px"></div></td></tr>
+        <tr class="skel-row"><td><div class="skel" style="width:40px"></div></td><td><div class="skel" style="width:200px"></div></td><td><div class="skel" style="width:60px"></div></td><td><div class="skel" style="width:100px"></div></td><td><div class="skel" style="width:90px"></div></td><td><div class="skel" style="width:80px"></div></td><td><div class="skel" style="width:150px"></div></td></tr>
+        <tr class="skel-row"><td><div class="skel" style="width:40px"></div></td><td><div class="skel" style="width:160px"></div></td><td><div class="skel" style="width:60px"></div></td><td><div class="skel" style="width:110px"></div></td><td><div class="skel" style="width:80px"></div></td><td><div class="skel" style="width:80px"></div></td><td><div class="skel" style="width:150px"></div></td></tr>
+      </tbody>
+    </table>
+  </div>
+  <p id="row-count" style="font-size:var(--text-xs);color:var(--tx-f);margin-top:var(--sp3);text-align:right"></p>
+</main>
+
+<!-- CONFIRM DELETE MODAL -->
+<div class="overlay" id="del-overlay" role="dialog" aria-modal="true" aria-labelledby="del-title">
+  <div class="modal">
+    <h2 id="del-title">Delete ticket?</h2>
+    <p id="del-body">This action cannot be undone.</p>
+    <div class="modal-btns">
+      <button class="btn-cancel" id="del-cancel">Cancel</button>
+      <button class="btn-confirm" id="del-confirm">Delete</button>
+    </div>
+  </div>
+</div>
+
+<!-- TOAST -->
+<div class="toast" id="toast" role="alert" aria-live="assertive"></div>
+
+<script src="supabase-config.js"></script>
+<script>
+/* ── Theme ─────────────────────────────────────────────────── */
+(function(){
+  const btn=document.querySelector('[data-theme-toggle]'),root=document.documentElement;
+  let d=matchMedia('(prefers-color-scheme:dark)').matches;
+  root.setAttribute('data-theme',d?'dark':'light');
+  function upd(){if(!btn)return;btn.innerHTML=d
+    ?'<svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="5"/><path d="M12 1v2M12 21v2M4.22 4.22l1.42 1.42M18.36 18.36l1.42 1.42M1 12h2M21 12h2M4.22 19.78l1.42-1.42M18.36 5.64l1.42-1.42"/></svg>'
+    :'<svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M21 12.79A9 9 0 1 1 11.21 3 7 7 0 0 0 21 12.79z"/></svg>';
+    btn.setAttribute('aria-label',d?'Switch to light mode':'Switch to dark mode');}
+  upd();if(btn)btn.addEventListener('click',()=>{d=!d;root.setAttribute('data-theme',d?'dark':'light');upd();});
+})();
+
+/* ── State ─────────────────────────────────────────────────── */
+let allTickets=[];
+let pendingDeleteId=null;
+let toastTimer=null;
+
+/* ── Toast ─────────────────────────────────────────────────── */
+function toast(msg,type='ok'){
+  const el=document.getElementById('toast');
+  if(toastTimer)clearTimeout(toastTimer);
+  el.textContent=msg; el.className='toast show '+type;
+  toastTimer=setTimeout(()=>el.className='toast',3200);
+}
+
+/* ── Animate count ─────────────────────────────────────────── */
+function animCount(el,target,dur=600){
+  const start=performance.now();
+  const from=parseInt(el.textContent)||0;
+  function step(now){
+    const p=Math.min((now-start)/dur,1);
+    el.textContent=Math.round(from+(target-from)*p);
+    if(p<1)requestAnimationFrame(step);
+    else el.textContent=target;
+  }
+  requestAnimationFrame(step);
+}
+
+function updateKPIs(tickets){
+  animCount(document.getElementById('kpi-all'),   tickets.length);
+  animCount(document.getElementById('kpi-open'),  tickets.filter(t=>t.status==='Open').length);
+  animCount(document.getElementById('kpi-inprog'),tickets.filter(t=>t.status==='In-Progress').length);
+  animCount(document.getElementById('kpi-res'),   tickets.filter(t=>t.status==='Resolved').length);
+}
+
+/* ── Render table ──────────────────────────────────────────── */
+function esc(s){return String(s||'').replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;');}
+function fmtDate(d){return new Date(d).toLocaleDateString('en-IE',{day:'2-digit',month:'short',year:'numeric'});}
+
+function renderRows(tickets){
+  const tbody=document.getElementById('tbody');
+  document.getElementById('row-count').textContent=
+    `${tickets.length} ticket${tickets.length!==1?'s':''} shown`;
+  if(!tickets.length){
+    tbody.innerHTML=`<tr><td colspan="7" class="empty-cell">
+      <h3>No tickets found</h3>
+      <p>Try a different filter or <a href="create-ticket.html" style="color:var(--pri)">submit a new ticket</a>.</p>
+    </td></tr>`;
+    return;
+  }
+  tbody.innerHTML=tickets.map(t=>{
+    const deptName=t.departments?.name||'Unknown';
+    const pri=t.priority;
+    const badgeCls=pri==='High'?'badge-h':pri==='Medium'?'badge-m':'badge-l';
+    const dot=pri==='High'?'●':pri==='Medium'?'●':'●';
+    const selCls=t.status==='Open'?'s-open':t.status==='In-Progress'?'s-inprog':'s-res';
+    return`<tr data-id="${t.id}">
+      <td><code style="font-size:var(--text-xs);color:var(--tx-m)">#${t.id}</code></td>
+      <td style="max-width:260px">
+        <span style="font-weight:600;display:block;overflow:hidden;text-overflow:ellipsis;white-space:nowrap"
+          title="${esc(t.title)}">${esc(t.title)}</span>
+        <span style="font-size:var(--text-xs);color:var(--tx-m)">${esc(t.submitter_name)}</span>
+      </td>
+      <td><span class="badge ${badgeCls}">${dot} ${esc(pri)}</span></td>
+      <td style="color:var(--tx-m);font-size:var(--text-sm)">${esc(deptName)}</td>
+      <td style="color:var(--tx-m);font-size:var(--text-sm)">${esc(t.submitter_name)}</td>
+      <td style="color:var(--tx-f);font-size:var(--text-xs);white-space:nowrap">${fmtDate(t.created_at)}</td>
+      <td>
+        <div style="display:flex;align-items:center;gap:var(--sp2)">
+          <!-- UPDATE: status dropdown -->
+          <select class="status-sel ${selCls}" data-id="${t.id}"
+            aria-label="Change status of ticket ${t.id}">
+            <option value="Open"        ${t.status==='Open'?'selected':''}>Open</option>
+            <option value="In-Progress" ${t.status==='In-Progress'?'selected':''}>In Progress</option>
+            <option value="Resolved"    ${t.status==='Resolved'?'selected':''}>Resolved</option>
+          </select>
+          <!-- DELETE button -->
+          <button class="btn-del" data-id="${t.id}" data-title="${esc(t.title)}"
+            aria-label="Delete ticket ${t.id}: ${esc(t.title)}">
+            <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true"><polyline points="3 6 5 6 21 6"/><path d="M19 6l-1 14H6L5 6"/><path d="M10 11v6m4-6v6"/><path d="M9 6V4h6v2"/></svg>
+          </button>
+        </div>
+      </td>
+    </tr>`;
+  }).join('');
+  lucide.createIcons();
+}
+
+/* ── Filter ────────────────────────────────────────────────── */
+function applyFilter(){
+  const q=document.getElementById('search').value.toLowerCase();
+  const st=document.getElementById('f-status').value;
+  const pr=document.getElementById('f-priority').value;
+  const filtered=allTickets.filter(t=>{
+    const dept=t.departments?.name||'';
+    const text=`${t.title} ${t.submitter_name} ${dept}`.toLowerCase();
+    return(!q||text.includes(q))&&(!st||t.status===st)&&(!pr||t.priority===pr);
+  });
+  renderRows(filtered);
+}
+
+/* ── READ — fetch from Supabase ────────────────────────────── */
+async function loadTickets(){
+  const btn=document.getElementById('reload-btn');
+  btn.innerHTML='<svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" style="animation:spin 1s linear infinite"><path d="M21 12a9 9 0 1 1-6.22-8.56"/></svg> Loading…';
+  const style=document.createElement('style');
+  style.textContent='@keyframes spin{to{transform:rotate(360deg)}}';
+  document.head.appendChild(style);
+  try{
+    allTickets=await db.select('tickets','?select=*,departments(name)&order=created_at.desc');
+    updateKPIs(allTickets);
+    applyFilter();
+  }catch(e){
+    document.getElementById('tbody').innerHTML=`<tr><td colspan="7" class="empty-cell">
+      <h3>Could not load tickets</h3>
+      <p>Check your credentials in <code>supabase-config.js</code></p>
+    </td></tr>`;
+    toast('Error loading tickets','err');
+    console.error(e);
+  }finally{
+    btn.innerHTML='<svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M1 4v6h6"/><path d="M23 20v-6h-6"/><path d="M20.49 9A9 9 0 0 0 5.64 5.64L1 10m22 4-4.64 4.36A9 9 0 0 1 3.51 15"/></svg> Reload';
+  }
+}
+
+/* ── UPDATE — status change ─────────────────────────────────── */
+document.getElementById('tbody').addEventListener('change', async function(e){
+  if(!e.target.classList.contains('status-sel'))return;
+  const id=e.target.dataset.id;
+  const newStatus=e.target.value;
+  const selCls=newStatus==='Open'?'s-open':newStatus==='In-Progress'?'s-inprog':'s-res';
+  e.target.className=`status-sel ${selCls}`;
+  try{
+    await db.update('tickets',id,{status:newStatus});
+    const t=allTickets.find(t=>String(t.id)===String(id));
+    if(t)t.status=newStatus;
+    updateKPIs(allTickets);
+    toast(`Ticket #${id} → ${newStatus}`,'ok');
+  }catch(err){
+    toast('Update failed — '+err.message,'err');
+    console.error(err);
+    await loadTickets();
+  }
+});
+
+/* ── DELETE — confirm modal ────────────────────────────────── */
+document.getElementById('tbody').addEventListener('click', function(e){
+  const btn=e.target.closest('.btn-del');
+  if(!btn)return;
+  pendingDeleteId=btn.dataset.id;
+  document.getElementById('del-body').textContent=
+    `Delete ticket #${pendingDeleteId}: "${btn.dataset.title}"? This cannot be undone.`;
+  document.getElementById('del-overlay').classList.add('show');
+  document.getElementById('del-cancel').focus();
+});
+function closeModal(){
+  document.getElementById('del-overlay').classList.remove('show');
+  pendingDeleteId=null;
+}
+document.getElementById('del-cancel').addEventListener('click',closeModal);
+document.getElementById('del-overlay').addEventListener('click',e=>{if(e.target===e.currentTarget)closeModal();});
+document.addEventListener('keydown',e=>{if(e.key==='Escape')closeModal();});
+
+document.getElementById('del-confirm').addEventListener('click', async()=>{
+  if(!pendingDeleteId)return;
+  const id=pendingDeleteId;
+  closeModal();
+  const row=document.querySelector(`tr[data-id="${id}"]`);
+  if(row)row.classList.add('deleting');
+  try{
+    await db.delete('tickets',id);
+    allTickets=allTickets.filter(t=>String(t.id)!==String(id));
+    updateKPIs(allTickets);
+    applyFilter();
+    toast(`Ticket #${id} deleted`,'ok');
+  }catch(err){
+    if(row)row.classList.remove('deleting');
+    toast('Delete failed — '+err.message,'err');
+    console.error(err);
+  }
+});
+
+/* ── Event bindings ────────────────────────────────────────── */
+document.getElementById('search').addEventListener('input',applyFilter);
+document.getElementById('f-status').addEventListener('change',applyFilter);
+document.getElementById('f-priority').addEventListener('change',applyFilter);
+document.getElementById('reload-btn').addEventListener('click',loadTickets);
+
+loadTickets();
+</script>
+<script>lucide.createIcons();</script>
 </body>
 </html>
