@@ -3,7 +3,7 @@ const SUPABASE_KEY = '';
 
 const supabaseClient = supabase.createClient(SUPABASE_URL, SUPABASE_KEY);
 
-// список департаментов Trinity 
+// Departments of TUD 
 const departments = [
   "Computer Science and Statistics",
   "Engineering",
@@ -23,7 +23,7 @@ const departments = [
 ];
 
 
-// заполняем dropdown
+// Dropdown 
 function loadDepartments() {
   const dropdown = document.getElementById("department");
 
@@ -38,7 +38,7 @@ function loadDepartments() {
 loadDepartments();
 
 
-// отправка формы
+// Form submission
 document.getElementById("ticketForm").addEventListener("submit", async function(e) {
   e.preventDefault();
 
@@ -59,7 +59,7 @@ document.getElementById("ticketForm").addEventListener("submit", async function(
         title: title,
         description: description,
         priority: priority,
-        department: department   // 👈 теперь строка, не id
+        department: department   
       }
     ]);
 
