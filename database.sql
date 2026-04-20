@@ -136,4 +136,16 @@ CREATE TABLE faqs (
 );
 
 COMMENT ON TABLE faqs IS 'Dynamic FAQs for the Helpdesk Knowledge Base';
+INSERT INTO faqs (category, icon, question, answer) VALUES
+('network', 'wifi-off', 'How do I connect to the company Wi-Fi?', '<p>Select <strong>CorpNet-Secure</strong> in your Wi-Fi settings and enter your company login credentials.</p><ul><li>Windows: Settings → Network & Internet → Wi-Fi</li><li>Mac: Menu bar Wi-Fi → CorpNet-Secure</li><li>If you see a certificate warning, click <strong>Trust</strong></li></ul>'),
+('network', 'shield', 'How do I set up or reconnect to the VPN?', '<p>We use <strong>Cisco AnyConnect</strong>. Download it from <code>software.company.internal</code>, sign in with your company email.</p><ul><li>Approve the MFA prompt on your registered phone</li><li>Error 442 after Windows update? Update the AnyConnect client</li></ul>'),
+('accounts', 'key-round', 'How do I reset my password?', '<p>Go to <code>password.company.internal</code> → "Forgot Password". A reset link is sent via SMS.</p><ul><li>Min 12 characters, 1 uppercase, 1 number, 1 symbol</li><li>Cannot reuse last 5 passwords</li><li>Locked out? Call IT at ext. <strong>4357</strong></li></ul>'),
+('accounts', 'user-plus', 'How do I request access to a shared folder?', '<p>Your manager must approve access requests. They can email <code>it-access@company.com</code> with your employee ID and required permissions. Standard turnaround: 1 business day.</p>'),
+('hardware', 'printer', 'How do I connect to the office printer?', '<p>Settings → Printers & Scanners → Add a printer → search <code>HP-Office-Floor{your_floor}</code>. Driver installs automatically.</p><ul><li>Printer offline? Check power and network cable</li><li>Toner low? Submit a ticket — replaced within 4 hours</li></ul>'),
+('hardware', 'monitor', 'My monitor is flickering or won''t turn on', '<ul><li>Check all display cables are firmly seated</li><li>Restart the computer completely</li><li>Try a different port (HDMI → DisplayPort)</li><li>Update graphics drivers via Device Manager → Display Adapters</li><li>Hardware fault? Submit a High priority ticket with your asset tag</li></ul>'),
+('software', 'mail', 'Outlook is not syncing my emails', '<p>Run the built-in Office repair tool:</p><ul><li>Close Outlook → Control Panel → Programs → Office → Quick Repair</li><li>Restart and reopen Outlook</li><li>If the issue persists, submit a Medium priority ticket</li></ul>'),
+('software', 'download', 'How do I install approved software?', '<p>Use <strong>Company Portal</strong> (Windows) or <strong>Self Service</strong> (Mac) — no admin rights needed. New software requests take 3–5 business days to approve.</p>');
 
+-- Включаем RLS
+ALTER TABLE faqs ENABLE ROW LEVEL SECURITY;
+CREATE POLICY "Public read faqs" ON faqs FOR SELECT USING (true);
