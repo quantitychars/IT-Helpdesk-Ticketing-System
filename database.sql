@@ -122,3 +122,18 @@ CREATE POLICY "Public delete tickets"   ON tickets     FOR DELETE USING (true);
 SELECT 'departments' AS table_name, COUNT(*) AS row_count FROM departments
 UNION ALL
 SELECT 'tickets', COUNT(*) FROM tickets;
+
+-- ============================================================
+-- 10. CREATE 3rd TABLE: faqs (Dynamic Knowledge Base)
+-- ============================================================
+CREATE TABLE faqs (
+    id SERIAL PRIMARY KEY,
+    category VARCHAR(50) NOT NULL,
+    icon VARCHAR(50) NOT NULL,
+    question VARCHAR(255) NOT NULL,
+    answer TEXT NOT NULL,
+    created_at TIMESTAMPTZ DEFAULT NOW()
+);
+
+COMMENT ON TABLE faqs IS 'Dynamic FAQs for the Helpdesk Knowledge Base';
+
