@@ -1,0 +1,263 @@
+<!DOCTYPE html>
+<html lang="en" data-theme="light">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>IT Helpdesk — Departments Directory</title>
+
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link
+    href="https://fonts.googleapis.com/css2?family=Inter:wght@300..700&display=swap"
+    rel="stylesheet"
+  />
+  <link rel="stylesheet" href="departments.css" />
+
+  <script src="https://unpkg.com/lucide@latest/dist/umd/lucide.min.js"></script>
+</head>
+<body>
+  <div class="app">
+    <nav class="topnav" aria-label="Main navigation">
+      <div class="nav-inner">
+        <a href="index.html" class="nav-logo">
+          <svg width="28" height="28" viewBox="0 0 28 28" fill="none" aria-hidden="true">
+            <rect width="28" height="28" rx="7" fill="var(--pri)" />
+            <rect x="7" y="13" width="14" height="2" rx="1" fill="#fff" />
+            <rect x="13" y="7" width="2" height="14" rx="1" fill="#fff" />
+            <circle cx="14" cy="14" r="5" stroke="#fff" stroke-width="1.5" fill="none" />
+          </svg>
+          <span>IT Helpdesk</span>
+        </a>
+
+        <div class="nav-links">
+          <a href="index.html" class="nav-link">
+            <i data-lucide="layout-dashboard" width="16" height="16"></i>
+            <span>Dashboard</span>
+          </a>
+          <a href="create-ticket.html" class="nav-link">
+            <i data-lucide="plus-circle" width="16" height="16"></i>
+            <span>Submit Ticket</span>
+          </a>
+          <a href="departments.html" class="nav-link active" aria-current="page">
+            <i data-lucide="building-2" width="16" height="16"></i>
+            <span>Departments</span>
+          </a>
+          <a href="faq.html" class="nav-link">
+            <i data-lucide="help-circle" width="16" height="16"></i>
+            <span>FAQ</span>
+          </a>
+        </div>
+
+        <button class="btn-icon" data-theme-toggle aria-label="Toggle dark mode">
+          <i data-lucide="sun" width="18" height="18"></i>
+        </button>
+      </div>
+    </nav>
+
+    <main id="main-content">
+      <a href="#main-content" class="sr-only">Skip to main content</a>
+
+      <div class="page-hdr">
+        <h1>Departments Directory</h1>
+        <p>
+          Find department locations, contacts, and open ticket counts —
+          <strong>Joel</strong>
+        </p>
+      </div>
+
+      <div class="search-bar">
+        <input
+          type="search"
+          class="search-inp"
+          id="search"
+          placeholder="Search by department name or manager…"
+          aria-label="Search departments"
+        />
+      </div>
+
+      <div id="container">
+        <div class="skel-grid" aria-label="Loading" aria-busy="true">
+          <div class="skel-card">
+            <div class="skel" style="height:42px;width:42px;border-radius:var(--r-lg)"></div>
+            <div class="skel" style="height:1.4em;width:60%"></div>
+            <div class="skel" style="height:.9em;width:80%"></div>
+            <div class="skel" style="height:.9em;width:65%"></div>
+          </div>
+
+          <div class="skel-card">
+            <div class="skel" style="height:42px;width:42px;border-radius:var(--r-lg)"></div>
+            <div class="skel" style="height:1.4em;width:55%"></div>
+            <div class="skel" style="height:.9em;width:75%"></div>
+            <div class="skel" style="height:.9em;width:60%"></div>
+          </div>
+
+          <div class="skel-card">
+            <div class="skel" style="height:42px;width:42px;border-radius:var(--r-lg)"></div>
+            <div class="skel" style="height:1.4em;width:70%"></div>
+            <div class="skel" style="height:.9em;width:80%"></div>
+            <div class="skel" style="height:.9em;width:50%"></div>
+          </div>
+        </div>
+      </div>
+    </main>
+  </div>
+
+  <script src="supabase-config.js"></script>
+  <script>
+    (function () {
+      const btn = document.querySelector("[data-theme-toggle]");
+      const root = document.documentElement;
+      let d = matchMedia("(prefers-color-scheme:dark)").matches;
+
+      root.setAttribute("data-theme", d ? "dark" : "light");
+
+      function upd() {
+        if (!btn) return;
+        btn.innerHTML = d
+          ? '<svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="5"/><path d="M12 1v2M12 21v2M4.22 4.22l1.42 1.42M18.36 18.36l1.42 1.42M1 12h2M21 12h2M4.22 19.78l1.42-1.42M18.36 5.64l1.42-1.42"/></svg>'
+          : '<svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M21 12.79A9 9 0 1 1 11.21 3 7 7 0 0 0 21 12.79z"/></svg>';
+
+        btn.setAttribute("aria-label", d ? "Switch to light mode" : "Switch to dark mode");
+      }
+
+      upd();
+
+      if (btn) {
+        btn.addEventListener("click", () => {
+          d = !d;
+          root.setAttribute("data-theme", d ? "dark" : "light");
+          upd();
+        });
+      }
+    })();
+
+    const ICONS = [
+      "building-2",
+      "users",
+      "bar-chart-2",
+      "megaphone",
+      "settings",
+      "scale",
+      "headphones",
+      "flask-conical"
+    ];
+
+    let allDepts = [],
+      openByDept = {};
+
+    function esc(s) {
+      return String(s || "")
+        .replace(/&/g, "&amp;")
+        .replace(/</g, "&lt;")
+        .replace(/>/g, "&gt;");
+    }
+
+    function renderCards(depts) {
+      const c = document.getElementById("container");
+
+      if (!depts.length) {
+        c.innerHTML = `
+          <div class="empty">
+            <svg width="44" height="44" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5">
+              <path d="M2 20h20M6 20V10l6-6 6 6v10M10 20v-5h4v5"/>
+            </svg>
+            <h3>No departments found</h3>
+            <p>Try a different search term.</p>
+          </div>
+        `;
+        return;
+      }
+
+      c.innerHTML = `
+        <div class="dept-grid" role="list" aria-label="Company departments">
+          ${depts
+            .map((d, i) => {
+              const open = openByDept[d.id] || 0;
+              const icon = ICONS[i % ICONS.length];
+              return `
+                <article class="dept-card" role="listitem">
+                  <div class="card-top">
+                    <div class="card-icon" aria-hidden="true">
+                      <i data-lucide="${icon}" width="20" height="20"></i>
+                    </div>
+                    <span class="floor-chip" aria-label="Floor ${d.floor}">Floor ${d.floor}</span>
+                  </div>
+
+                  <div>
+                    <h2>${esc(d.name)}</h2>
+                    <p class="card-subtitle">Department</p>
+                  </div>
+
+                  <dl>
+                    <div>
+                      <dt>Manager</dt>
+                      <dd>${esc(d.manager_name || "Not assigned")}</dd>
+                    </div>
+                    <div>
+                      <dt>Contact Email</dt>
+                      <dd><a href="mailto:${esc(d.contact_email)}">${esc(d.contact_email)}</a></dd>
+                    </div>
+                  </dl>
+
+                  <div class="card-footer">
+                    <h3>Open Tickets</h3>
+                    <span class="open-count" aria-label="${open} open tickets">${open}</span>
+                  </div>
+                </article>
+              `;
+            })
+            .join("")}
+        </div>
+      `;
+
+      lucide.createIcons();
+    }
+
+    async function loadData() {
+      try {
+        const [depts, tickets] = await Promise.all([
+          db.select("departments", "?select=*&order=name.asc"),
+          db.select("tickets", "?select=department_id,status")
+        ]);
+
+        allDepts = depts;
+
+        tickets.forEach((t) => {
+          if (t.status !== "Resolved") {
+            openByDept[t.department_id] = (openByDept[t.department_id] || 0) + 1;
+          }
+        });
+
+        renderCards(depts);
+      } catch (e) {
+        document.getElementById("container").innerHTML = `
+          <div class="empty">
+            <h3>Could not load departments</h3>
+            <p>Check <code>supabase-config.js</code></p>
+          </div>
+        `;
+        console.error(e);
+      }
+    }
+
+    document.getElementById("search").addEventListener("input", function () {
+      const q = this.value.toLowerCase();
+
+      renderCards(
+        allDepts.filter(
+          (d) =>
+            d.name.toLowerCase().includes(q) ||
+            (d.manager_name || "").toLowerCase().includes(q) ||
+            d.contact_email.toLowerCase().includes(q)
+        )
+      );
+    });
+
+    loadData();
+  </script>
+
+  <script>
+    lucide.createIcons();
+  </script>
+</body>
+</html>
