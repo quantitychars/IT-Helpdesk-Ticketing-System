@@ -1,0 +1,91 @@
+<!DOCTYPE html>
+<html lang="en" data-theme="light">
+<head>
+<meta charset="UTF-8"><meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>IT Helpdesk — Departments Directory</title>
+<link rel="preconnect" href="https://fonts.googleapis.com"><link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@300..700&display=swap" rel="stylesheet">
+<script src="https://unpkg.com/lucide@latest/dist/umd/lucide.min.js"></script>
+<style>
+:root,[data-theme="light"]{--text-xs:clamp(.75rem,.7rem + .25vw,.875rem);--text-sm:clamp(.875rem,.8rem + .35vw,1rem);--text-base:clamp(1rem,.95rem + .25vw,1.125rem);--text-lg:clamp(1.125rem,1rem + .75vw,1.5rem);--text-xl:clamp(1.5rem,1.2rem + 1.25vw,2.25rem);--sp1:.25rem;--sp2:.5rem;--sp3:.75rem;--sp4:1rem;--sp5:1.25rem;--sp6:1.5rem;--sp8:2rem;--sp10:2.5rem;--sp12:3rem;--sp16:4rem;--r-sm:.375rem;--r-md:.5rem;--r-lg:.75rem;--r-xl:1rem;--r-full:9999px;--tr:180ms cubic-bezier(.16,1,.3,1);--bg:#f7f6f2;--sur:#f9f8f5;--sur2:#fbfbf9;--sur-off:#f3f0ec;--bor:rgba(40,37,29,.12);--div:rgba(40,37,29,.08);--tx:#28251d;--tx-m:#7a7974;--tx-f:#bab9b4;--pri:#01696f;--pri-h:#0c4e54;--pri-hl:#cedcd8;--gol:#d19900;--gol-hl:#e9e0c6;--suc:#437a22;--suc-hl:#d4dfcc;--sh-sm:0 1px 2px oklch(.2 .01 80/.06);--sh-md:0 4px 12px oklch(.2 .01 80/.08);}
+[data-theme="dark"]{--bg:#171614;--sur:#1c1b19;--sur2:#201f1d;--sur-off:#1d1c1a;--bor:rgba(205,204,202,.1);--div:rgba(205,204,202,.06);--tx:#cdccca;--tx-m:#797876;--tx-f:#5a5957;--pri:#4f98a3;--pri-h:#227f8b;--pri-hl:#313b3b;--gol:#e8af34;--gol-hl:#4d4332;--suc:#6daa45;--suc-hl:#3a4435;--sh-sm:0 1px 2px oklch(0 0 0/.2);--sh-md:0 4px 12px oklch(0 0 0/.3);}
+@media(prefers-color-scheme:dark){:root:not([data-theme]){--bg:#171614;--sur:#1c1b19;--sur2:#201f1d;--sur-off:#1d1c1a;--bor:rgba(205,204,202,.1);--div:rgba(205,204,202,.06);--tx:#cdccca;--tx-m:#797876;--tx-f:#5a5957;--pri:#4f98a3;--pri-h:#227f8b;--pri-hl:#313b3b;--gol:#e8af34;--gol-hl:#4d4332;--suc:#6daa45;--suc-hl:#3a4435;--sh-sm:0 1px 2px oklch(0 0 0/.2);--sh-md:0 4px 12px oklch(0 0 0/.3);}}
+*,*::before,*::after{box-sizing:border-box;margin:0;padding:0}html{scroll-behavior:smooth;-webkit-font-smoothing:antialiased}body{min-height:100dvh;font-family:'Inter',system-ui,sans-serif;font-size:var(--text-base);color:var(--tx);background:var(--bg);line-height:1.6}svg,img{display:block;max-width:100%}input,select,button{font:inherit;color:inherit}button{cursor:pointer;background:none;border:none}a,button,[role=button],input,select{transition:color var(--tr),background var(--tr),border-color var(--tr),box-shadow var(--tr)}:focus-visible{outline:2px solid var(--pri);outline-offset:3px;border-radius:var(--r-sm)}.sr-only{position:absolute;width:1px;height:1px;padding:0;margin:-1px;overflow:hidden;clip:rect(0,0,0,0);white-space:nowrap;border-width:0}@media(prefers-reduced-motion:reduce){*,*::before,*::after{animation-duration:.01ms!important;transition-duration:.01ms!important}}
+.app{display:flex;flex-direction:column;min-height:100dvh}nav.topnav{background:var(--sur);border-bottom:1px solid var(--bor);position:sticky;top:0;z-index:100;box-shadow:var(--sh-sm)}.nav-inner{max-width:1280px;margin-inline:auto;padding:0 var(--sp6);display:flex;align-items:center;height:56px;gap:var(--sp6)}.nav-logo{display:flex;align-items:center;gap:var(--sp2);font-weight:700;font-size:var(--text-sm);color:var(--tx);text-decoration:none}.nav-links{display:flex;gap:var(--sp1);margin-left:auto}.nav-link{display:flex;align-items:center;gap:var(--sp2);padding:var(--sp2) var(--sp3);border-radius:var(--r-md);font-size:var(--text-sm);font-weight:500;color:var(--tx-m);text-decoration:none;white-space:nowrap}.nav-link:hover{background:var(--sur-off);color:var(--tx)}.nav-link.active{background:var(--pri-hl);color:var(--pri)}.btn-icon{display:flex;align-items:center;justify-content:center;width:36px;height:36px;border-radius:var(--r-md);color:var(--tx-m)}.btn-icon:hover{background:var(--sur-off);color:var(--tx)}
+main{flex:1;max-width:1280px;margin-inline:auto;padding:var(--sp8) var(--sp6);width:100%}.page-hdr{margin-bottom:var(--sp8)}.page-hdr h1{font-size:var(--text-xl);font-weight:700}.page-hdr p{color:var(--tx-m);margin-top:var(--sp2);font-size:var(--text-sm)}
+.search-bar{margin-bottom:var(--sp6)}.search-inp{padding:var(--sp3) var(--sp4);border:1px solid var(--bor);border-radius:var(--r-md);background:var(--sur);font-size:var(--text-sm);width:100%;max-width:380px}.search-inp:hover{border-color:var(--pri)}.search-inp:focus{outline:2px solid var(--pri);outline-offset:2px}
+/* CSS GRID — Joel's department profile cards */
+.dept-grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(min(280px,100%),1fr));gap:var(--sp5)}
+.dept-card{background:var(--sur);border:1px solid var(--bor);border-radius:var(--r-xl);padding:var(--sp6);box-shadow:var(--sh-sm);display:flex;flex-direction:column;gap:var(--sp4);transition:box-shadow var(--tr),transform var(--tr)}
+.dept-card:hover{box-shadow:var(--sh-md);transform:translateY(-2px)}
+.card-top{display:flex;align-items:flex-start;justify-content:space-between;gap:var(--sp3)}
+.card-icon{width:42px;height:42px;border-radius:var(--r-lg);background:var(--pri-hl);color:var(--pri);display:flex;align-items:center;justify-content:center;flex-shrink:0}
+.floor-chip{background:var(--gol-hl);color:var(--gol);font-size:var(--text-xs);font-weight:600;padding:.25em .7em;border-radius:var(--r-full);white-space:nowrap}
+.dept-card h2{font-size:var(--text-lg);font-weight:700;line-height:1.2;color:var(--tx)}
+.card-subtitle{font-size:var(--text-xs);color:var(--tx-m);text-transform:uppercase;letter-spacing:.06em;font-weight:600;margin-top:var(--sp1)}
+.dept-card dl{display:flex;flex-direction:column;gap:var(--sp2);margin-top:var(--sp1)}
+.dept-card dt{font-size:var(--text-xs);color:var(--tx-f);text-transform:uppercase;letter-spacing:.06em;font-weight:600}
+.dept-card dd{font-size:var(--text-sm);color:var(--tx-m);margin:0}
+.dept-card dd a{color:var(--pri);text-decoration:none}.dept-card dd a:hover{text-decoration:underline}
+.card-footer{margin-top:auto;padding-top:var(--sp4);border-top:1px solid var(--div);display:flex;align-items:center;justify-content:space-between}
+.card-footer h3{font-size:var(--text-xs);color:var(--tx-m);font-weight:600;text-transform:uppercase;letter-spacing:.06em}
+.open-count{font-size:var(--text-lg);font-weight:700;color:var(--pri);font-variant-numeric:tabular-nums}
+.empty{display:flex;flex-direction:column;align-items:center;padding:var(--sp16);color:var(--tx-m);text-align:center;gap:var(--sp4)}.empty h3{color:var(--tx)}
+.skel-grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(280px,1fr));gap:var(--sp5)}
+.skel-card{background:var(--sur);border:1px solid var(--bor);border-radius:var(--r-xl);padding:var(--sp6);display:flex;flex-direction:column;gap:var(--sp3)}
+.skel{background:linear-gradient(90deg,var(--sur-off) 25%,var(--sur) 50%,var(--sur-off) 75%);background-size:200% 100%;animation:shim 1.5s ease-in-out infinite;border-radius:var(--r-sm)}
+@keyframes shim{0%{background-position:-200% 0}100%{background-position:200% 0}}
+@media(max-width:768px){main{padding:var(--sp6) var(--sp4)}.nav-link span{display:none}}
+</style>
+</head>
+<body>
+<div class="app">
+<nav class="topnav" aria-label="Main navigation">
+  <div class="nav-inner">
+    <a href="index.html" class="nav-logo"><svg width="28" height="28" viewBox="0 0 28 28" fill="none" aria-hidden="true"><rect width="28" height="28" rx="7" fill="var(--pri)"/><rect x="7" y="13" width="14" height="2" rx="1" fill="#fff"/><rect x="13" y="7" width="2" height="14" rx="1" fill="#fff"/><circle cx="14" cy="14" r="5" stroke="#fff" stroke-width="1.5" fill="none"/></svg><span>IT Helpdesk</span></a>
+    <nav class="nav-links">
+      <a href="index.html" class="nav-link"><i data-lucide="layout-dashboard" width="16" height="16"></i><span>Dashboard</span></a>
+      <a href="create-ticket.html" class="nav-link"><i data-lucide="plus-circle" width="16" height="16"></i><span>Submit Ticket</span></a>
+      <a href="departments.html" class="nav-link active" aria-current="page"><i data-lucide="building-2" width="16" height="16"></i><span>Departments</span></a>
+      <a href="faq.html" class="nav-link"><i data-lucide="help-circle" width="16" height="16"></i><span>FAQ</span></a>
+    </nav>
+    <button class="btn-icon" data-theme-toggle aria-label="Toggle dark mode"><i data-lucide="sun" width="18" height="18"></i></button>
+  </div>
+</nav>
+<main id="main-content">
+  <a href="#main-content" class="sr-only">Skip to main content</a>
+  <div class="page-hdr"><h1>Departments Directory</h1><p>Find department locations, contacts, and open ticket counts — <strong>Joel</strong></p></div>
+  <div class="search-bar"><input type="search" class="search-inp" id="search" placeholder="Search by department name or manager…" aria-label="Search departments"></div>
+  <div id="container">
+    <div class="skel-grid" aria-label="Loading" aria-busy="true">
+      <div class="skel-card"><div class="skel" style="height:42px;width:42px;border-radius:var(--r-lg)"></div><div class="skel" style="height:1.4em;width:60%"></div><div class="skel" style="height:.9em;width:80%"></div><div class="skel" style="height:.9em;width:65%"></div></div>
+      <div class="skel-card"><div class="skel" style="height:42px;width:42px;border-radius:var(--r-lg)"></div><div class="skel" style="height:1.4em;width:55%"></div><div class="skel" style="height:.9em;width:75%"></div><div class="skel" style="height:.9em;width:60%"></div></div>
+      <div class="skel-card"><div class="skel" style="height:42px;width:42px;border-radius:var(--r-lg)"></div><div class="skel" style="height:1.4em;width:70%"></div><div class="skel" style="height:.9em;width:80%"></div><div class="skel" style="height:.9em;width:50%"></div></div>
+    </div>
+  </div>
+</main>
+</div>
+<script src="supabase-config.js"></script>
+<script>
+(function(){const btn=document.querySelector('[data-theme-toggle]'),root=document.documentElement;let d=matchMedia('(prefers-color-scheme:dark)').matches;root.setAttribute('data-theme',d?'dark':'light');function upd(){if(!btn)return;btn.innerHTML=d?'<svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="5"/><path d="M12 1v2M12 21v2M4.22 4.22l1.42 1.42M18.36 18.36l1.42 1.42M1 12h2M21 12h2M4.22 19.78l1.42-1.42M18.36 5.64l1.42-1.42"/></svg>':'<svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M21 12.79A9 9 0 1 1 11.21 3 7 7 0 0 0 21 12.79z"/></svg>';btn.setAttribute('aria-label',d?'Switch to light mode':'Switch to dark mode');}upd();if(btn)btn.addEventListener('click',()=>{d=!d;root.setAttribute('data-theme',d?'dark':'light');upd();});})();
+const ICONS=['building-2','users','bar-chart-2','megaphone','settings','scale','headphones','flask-conical'];
+let allDepts=[],openByDept={};
+function esc(s){return String(s||'').replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;');}
+function renderCards(depts){
+  const c=document.getElementById('container');
+  if(!depts.length){c.innerHTML=`<div class="empty"><svg width="44" height="44" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><path d="M2 20h20M6 20V10l6-6 6 6v10M10 20v-5h4v5"/></svg><h3>No departments found</h3><p>Try a different search term.</p></div>`;return;}
+  c.innerHTML=`<div class="dept-grid" role="list" aria-label="Company departments">${depts.map((d,i)=>{const open=openByDept[d.id]||0;const icon=ICONS[i%ICONS.length];return`<article class="dept-card" role="listitem"><div class="card-top"><div class="card-icon" aria-hidden="true"><i data-lucide="${icon}" width="20" height="20"></i></div><span class="floor-chip" aria-label="Floor ${d.floor}">Floor ${d.floor}</span></div><div><h2>${esc(d.name)}</h2><p class="card-subtitle">Department</p></div><dl><div><dt>Manager</dt><dd>${esc(d.manager_name||'Not assigned')}</dd></div><div><dt>Contact Email</dt><dd><a href="mailto:${esc(d.contact_email)}">${esc(d.contact_email)}</a></dd></div></dl><div class="card-footer"><h3>Open Tickets</h3><span class="open-count" aria-label="${open} open tickets">${open}</span></div></article>`;}).join('')}</div>`;
+  lucide.createIcons();
+}
+async function loadData(){
+  try{
+    const [depts,tickets]=await Promise.all([db.select('departments','?select=*&order=name.asc'),db.select('tickets','?select=department_id,status')]);
+    allDepts=depts;tickets.forEach(t=>{if(t.status!=='Resolved')openByDept[t.department_id]=(openByDept[t.department_id]||0)+1;});renderCards(depts);
+  }catch(e){document.getElementById('container').innerHTML=`<div class="empty"><h3>Could not load departments</h3><p>Check <code>supabase-config.js</code></p></div>`;console.error(e);}
+}
+document.getElementById('search').addEventListener('input',function(){const q=this.value.toLowerCase();renderCards(allDepts.filter(d=>d.name.toLowerCase().includes(q)||(d.manager_name||'').toLowerCase().includes(q)||d.contact_email.toLowerCase().includes(q)));});
+loadData();
+</script>
+<script>lucide.createIcons();</script>
+</body>
+</html>
