@@ -3,8 +3,6 @@
 //  Replace the two values below with YOUR project credentials:
 //  Supabase → Settings → API
 // ============================================================
-const SUPABASE_URL = "";
-const SUPABASE_KEY = "";
 
 // ── Lightweight REST helper (no library needed) ─────────────
 const db = {

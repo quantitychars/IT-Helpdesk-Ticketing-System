@@ -1,167 +1,781 @@
-<!DOCTYPE html>
+<!doctype html>
 <html lang="en" data-theme="light">
-<head>
-<meta charset="UTF-8"><meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>IT Helpdesk — FAQ & Knowledge Base</title>
-<link rel="preconnect" href="https://fonts.googleapis.com">
-<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-<link href="https://fonts.googleapis.com/css2?family=Inter:wght@300..700&display=swap" rel="stylesheet">
-<script src="https://unpkg.com/lucide@latest/dist/umd/lucide.min.js"></script>
-<style>
-:root,[data-theme="light"]{--text-xs:clamp(.75rem,.7rem + .25vw,.875rem);--text-sm:clamp(.875rem,.8rem + .35vw,1rem);--text-base:clamp(1rem,.95rem + .25vw,1.125rem);--text-lg:clamp(1.125rem,1rem + .75vw,1.5rem);--text-xl:clamp(1.5rem,1.2rem + 1.25vw,2.25rem);--sp1:.25rem;--sp2:.5rem;--sp3:.75rem;--sp4:1rem;--sp5:1.25rem;--sp6:1.5rem;--sp8:2rem;--sp10:2.5rem;--sp12:3rem;--sp16:4rem;--r-sm:.375rem;--r-md:.5rem;--r-lg:.75rem;--r-xl:1rem;--r-full:9999px;--tr:180ms cubic-bezier(.16,1,.3,1);--bg:#f7f6f2;--sur:#f9f8f5;--sur2:#fbfbf9;--sur-off:#f3f0ec;--bor:rgba(40,37,29,.12);--div:rgba(40,37,29,.08);--tx:#28251d;--tx-m:#7a7974;--tx-f:#bab9b4;--pri:#01696f;--pri-h:#0c4e54;--pri-hl:#cedcd8;--gol:#d19900;--gol-hl:#e9e0c6;--suc:#437a22;--suc-hl:#d4dfcc;--sh-sm:0 1px 2px oklch(.2 .01 80/.06);--sh-md:0 4px 12px oklch(.2 .01 80/.08);}[data-theme="dark"]{--bg:#171614;--sur:#1c1b19;--sur2:#201f1d;--sur-off:#1d1c1a;--bor:rgba(205,204,202,.1);--div:rgba(205,204,202,.06);--tx:#cdccca;--tx-m:#797876;--tx-f:#5a5957;--pri:#4f98a3;--pri-h:#227f8b;--pri-hl:#313b3b;--gol:#e8af34;--gol-hl:#4d4332;--suc:#6daa45;--suc-hl:#3a4435;--sh-sm:0 1px 2px oklch(0 0 0/.2);--sh-md:0 4px 12px oklch(0 0 0/.3);}
-@media(prefers-color-scheme:dark){:root:not([data-theme]){--bg:#171614;--sur:#1c1b19;--sur2:#201f1d;--sur-off:#1d1c1a;--bor:rgba(205,204,202,.1);--div:rgba(205,204,202,.06);--tx:#cdccca;--tx-m:#797876;--tx-f:#5a5957;--pri:#4f98a3;--pri-h:#227f8b;--pri-hl:#313b3b;--gol:#e8af34;--gol-hl:#4d4332;--suc:#6daa45;--suc-hl:#3a4435;--sh-sm:0 1px 2px oklch(0 0 0/.2);--sh-md:0 4px 12px oklch(0 0 0/.3);}}
-*,*::before,*::after{box-sizing:border-box;margin:0;padding:0}html{scroll-behavior:smooth;-webkit-font-smoothing:antialiased}body{min-height:100dvh;font-family:'Inter',system-ui,sans-serif;font-size:var(--text-base);color:var(--tx);background:var(--bg);line-height:1.7}svg,img{display:block;max-width:100%}input,select,button{font:inherit;color:inherit}button{cursor:pointer;background:none;border:none}a,button,[role=button],input,select{transition:color var(--tr),background var(--tr),border-color var(--tr),box-shadow var(--tr)}:focus-visible{outline:2px solid var(--pri);outline-offset:3px;border-radius:var(--r-sm)}.sr-only{position:absolute;width:1px;height:1px;padding:0;margin:-1px;overflow:hidden;clip:rect(0,0,0,0);white-space:nowrap;border-width:0}@media(prefers-reduced-motion:reduce){*,*::before,*::after{animation-duration:.01ms!important;transition-duration:.01ms!important}}
-.app{display:flex;flex-direction:column;min-height:100dvh}nav.topnav{background:var(--sur);border-bottom:1px solid var(--bor);position:sticky;top:0;z-index:100;box-shadow:var(--sh-sm)}.nav-inner{max-width:1280px;margin-inline:auto;padding:0 var(--sp6);display:flex;align-items:center;height:56px;gap:var(--sp6)}.nav-logo{display:flex;align-items:center;gap:var(--sp2);font-weight:700;font-size:var(--text-sm);color:var(--tx);text-decoration:none}.nav-links{display:flex;gap:var(--sp1);margin-left:auto}.nav-link{display:flex;align-items:center;gap:var(--sp2);padding:var(--sp2) var(--sp3);border-radius:var(--r-md);font-size:var(--text-sm);font-weight:500;color:var(--tx-m);text-decoration:none;white-space:nowrap}.nav-link:hover{background:var(--sur-off);color:var(--tx)}.nav-link.active{background:var(--pri-hl);color:var(--pri)}.btn-icon{display:flex;align-items:center;justify-content:center;width:36px;height:36px;border-radius:var(--r-md);color:var(--tx-m)}.btn-icon:hover{background:var(--sur-off);color:var(--tx)}
-main{flex:1;max-width:800px;margin-inline:auto;padding:var(--sp10) var(--sp6);width:100%}
-.status-banner{display:flex;align-items:center;gap:var(--sp3);padding:var(--sp4) var(--sp5);border-radius:var(--r-lg);border:1px solid var(--bor);background:var(--sur);margin-bottom:var(--sp8);font-size:var(--text-sm);box-shadow:var(--sh-sm)}
-.status-dot{width:10px;height:10px;border-radius:var(--r-full);flex-shrink:0;background:var(--tx-f)}.status-dot.ok{background:var(--suc)}.status-dot.pulse{animation:pulse 2s ease-in-out infinite}@keyframes pulse{0%,100%{opacity:1}50%{opacity:.45}}
-.status-text{color:var(--tx-m)}.status-text strong{color:var(--tx)}.status-meta{margin-left:auto;font-size:var(--text-xs);color:var(--tx-f)}
-.page-hdr{margin-bottom:var(--sp8)}.page-hdr h1{font-size:var(--text-xl);font-weight:700}.page-hdr p{color:var(--tx-m);margin-top:var(--sp2);font-size:var(--text-sm)}
-.faq-controls{display:flex;flex-direction:column;gap:var(--sp4);margin-bottom:var(--sp6)}
-.faq-search-wrap{position:relative}.faq-search{width:100%;padding:var(--sp3) var(--sp4) var(--sp3) 2.6rem;border:1px solid var(--bor);border-radius:var(--r-md);background:var(--sur);font-size:var(--text-sm)}.faq-search:hover{border-color:var(--pri)}.faq-search:focus{outline:2px solid var(--pri);outline-offset:2px;border-color:var(--pri)}.search-icon{position:absolute;left:var(--sp3);top:50%;transform:translateY(-50%);color:var(--tx-f);pointer-events:none}
-.cat-tabs{display:flex;gap:var(--sp2);flex-wrap:wrap}.cat-tab{padding:var(--sp2) var(--sp4);border-radius:var(--r-full);font-size:var(--text-xs);font-weight:600;border:1px solid var(--bor);color:var(--tx-m);background:var(--sur)}.cat-tab:hover{border-color:var(--pri);color:var(--pri)}.cat-tab.active{background:var(--pri-hl);border-color:var(--pri);color:var(--pri)}
-.faq-section{margin-bottom:var(--sp8)}.faq-section > h2{font-size:var(--text-lg);font-weight:700;margin-bottom:var(--sp4);padding-bottom:var(--sp3);border-bottom:1px solid var(--div)}
-.faq-list{display:flex;flex-direction:column;gap:var(--sp2)}
-details.faq-item{background:var(--sur);border:1px solid var(--bor);border-radius:var(--r-lg);overflow:hidden}
-details.faq-item[open]{box-shadow:var(--sh-sm)}
-summary.faq-q{display:flex;align-items:center;gap:var(--sp3);padding:var(--sp4) var(--sp5);font-size:var(--text-sm);font-weight:600;cursor:pointer;list-style:none;user-select:none;color:var(--tx)}
-summary.faq-q::-webkit-details-marker{display:none}
-summary.faq-q:hover{background:var(--sur-off)}
-.q-icon{width:20px;height:20px;flex-shrink:0;color:var(--pri)}
-.chevron{margin-left:auto;width:16px;height:16px;flex-shrink:0;color:var(--tx-f);transition:transform var(--tr)}
-details[open] summary .chevron{transform:rotate(180deg)}
-.faq-a{padding:0 var(--sp5) var(--sp5) calc(var(--sp5) + 20px + var(--sp3));font-size:var(--text-sm);color:var(--tx-m);line-height:1.75}
-.faq-a ul{padding-left:var(--sp5);margin-top:var(--sp2)}.faq-a li{margin-bottom:var(--sp1)}.faq-a code{background:var(--sur-off);padding:.1em .4em;border-radius:var(--r-sm);font-family:ui-monospace,monospace;font-size:.9em}.faq-a strong{color:var(--tx);font-weight:600}
-.no-res{padding:var(--sp12) 0;text-align:center;color:var(--tx-m)}.no-res p{max-width:40ch;margin:.5rem auto 0}
-.help-card{background:var(--pri-hl);border:1px solid var(--pri);border-radius:var(--r-xl);padding:var(--sp8);margin-top:var(--sp10)}.help-card h2{font-size:var(--text-lg);font-weight:700;color:var(--pri)}.help-card p{font-size:var(--text-sm);color:var(--pri-h);margin-top:var(--sp2)}.btn-help{display:inline-flex;align-items:center;gap:var(--sp2);margin-top:var(--sp4);padding:var(--sp3) var(--sp6);background:var(--pri);color:#fff;border-radius:var(--r-md);font-size:var(--text-sm);font-weight:600;text-decoration:none}.btn-help:hover{background:var(--pri-h)}
-@media(max-width:768px){main{padding:var(--sp6) var(--sp4)}.nav-link span{display:none}}
-</style>
-</head>
-<body>
-<div class="app">
-<nav class="topnav" aria-label="Main navigation">
-  <div class="nav-inner">
-    <a href="index.html" class="nav-logo"><svg width="28" height="28" viewBox="0 0 28 28" fill="none" aria-hidden="true"><rect width="28" height="28" rx="7" fill="var(--pri)"/><rect x="7" y="13" width="14" height="2" rx="1" fill="#fff"/><rect x="13" y="7" width="2" height="14" rx="1" fill="#fff"/><circle cx="14" cy="14" r="5" stroke="#fff" stroke-width="1.5" fill="none"/></svg><span>IT Helpdesk</span></a>
-    <nav class="nav-links">
-      <a href="index.html" class="nav-link"><i data-lucide="layout-dashboard" width="16" height="16"></i><span>Dashboard</span></a>
-      <a href="create-ticket.html" class="nav-link"><i data-lucide="plus-circle" width="16" height="16"></i><span>Submit Ticket</span></a>
-      <a href="departments.html" class="nav-link"><i data-lucide="building-2" width="16" height="16"></i><span>Departments</span></a>
-      <a href="faq.html" class="nav-link active" aria-current="page"><i data-lucide="help-circle" width="16" height="16"></i><span>FAQ</span></a>
-    </nav>
-    <button class="btn-icon" data-theme-toggle aria-label="Toggle dark mode"><i data-lucide="sun" width="18" height="18"></i></button>
-  </div>
-</nav>
-<main id="main-content">
-  <a href="#main-content" class="sr-only">Skip to main content</a>
-  <div class="status-banner" id="status-banner" role="status" aria-live="polite">
-    <div class="status-dot pulse" id="status-dot"></div>
-    <p class="status-text" id="status-text"><strong>Checking system status…</strong></p>
-    <span class="status-meta" id="status-meta"></span>
-  </div>
-  <div class="page-hdr"><h1>IT Knowledge Base &amp; FAQ</h1><p>Find answers to common technical issues before submitting a ticket — <strong>Rukhma</strong></p></div>
-  <div class="faq-controls">
-    <div class="faq-search-wrap">
-      <svg class="search-icon" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true"><circle cx="11" cy="11" r="8"/><path d="m21 21-4.35-4.35"/></svg>
-      <input type="search" class="faq-search" id="faq-search" placeholder="Search FAQs…" aria-label="Search frequently asked questions">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>IT Helpdesk — FAQ & Knowledge Base</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link
+      href="https://fonts.googleapis.com/css2?family=Inter:wght@300..700&display=swap"
+      rel="stylesheet"
+    />
+    <script src="https://unpkg.com/lucide@latest/dist/umd/lucide.min.js"></script>
+    <style>
+      :root,
+      [data-theme="light"] {
+        --text-xs: clamp(0.75rem, 0.7rem + 0.25vw, 0.875rem);
+        --text-sm: clamp(0.875rem, 0.8rem + 0.35vw, 1rem);
+        --text-base: clamp(1rem, 0.95rem + 0.25vw, 1.125rem);
+        --text-lg: clamp(1.125rem, 1rem + 0.75vw, 1.5rem);
+        --text-xl: clamp(1.5rem, 1.2rem + 1.25vw, 2.25rem);
+        --sp1: 0.25rem;
+        --sp2: 0.5rem;
+        --sp3: 0.75rem;
+        --sp4: 1rem;
+        --sp5: 1.25rem;
+        --sp6: 1.5rem;
+        --sp8: 2rem;
+        --sp10: 2.5rem;
+        --sp12: 3rem;
+        --sp16: 4rem;
+        --r-sm: 0.375rem;
+        --r-md: 0.5rem;
+        --r-lg: 0.75rem;
+        --r-xl: 1rem;
+        --r-full: 9999px;
+        --tr: 180ms cubic-bezier(0.16, 1, 0.3, 1);
+        --bg: #f7f6f2;
+        --sur: #f9f8f5;
+        --sur2: #fbfbf9;
+        --sur-off: #f3f0ec;
+        --bor: rgba(40, 37, 29, 0.12);
+        --div: rgba(40, 37, 29, 0.08);
+        --tx: #28251d;
+        --tx-m: #7a7974;
+        --tx-f: #bab9b4;
+        --pri: #01696f;
+        --pri-h: #0c4e54;
+        --pri-hl: #cedcd8;
+        --gol: #d19900;
+        --gol-hl: #e9e0c6;
+        --suc: #437a22;
+        --suc-hl: #d4dfcc;
+        --sh-sm: 0 1px 2px oklch(0.2 0.01 80/0.06);
+        --sh-md: 0 4px 12px oklch(0.2 0.01 80/0.08);
+      }
+      [data-theme="dark"] {
+        --bg: #171614;
+        --sur: #1c1b19;
+        --sur2: #201f1d;
+        --sur-off: #1d1c1a;
+        --bor: rgba(205, 204, 202, 0.1);
+        --div: rgba(205, 204, 202, 0.06);
+        --tx: #cdccca;
+        --tx-m: #797876;
+        --tx-f: #5a5957;
+        --pri: #4f98a3;
+        --pri-h: #227f8b;
+        --pri-hl: #313b3b;
+        --gol: #e8af34;
+        --gol-hl: #4d4332;
+        --suc: #6daa45;
+        --suc-hl: #3a4435;
+        --sh-sm: 0 1px 2px oklch(0 0 0/0.2);
+        --sh-md: 0 4px 12px oklch(0 0 0/0.3);
+      }
+      @media (prefers-color-scheme: dark) {
+        :root:not([data-theme]) {
+          --bg: #171614;
+          --sur: #1c1b19;
+          --sur2: #201f1d;
+          --sur-off: #1d1c1a;
+          --bor: rgba(205, 204, 202, 0.1);
+          --div: rgba(205, 204, 202, 0.06);
+          --tx: #cdccca;
+          --tx-m: #797876;
+          --tx-f: #5a5957;
+          --pri: #4f98a3;
+          --pri-h: #227f8b;
+          --pri-hl: #313b3b;
+          --gol: #e8af34;
+          --gol-hl: #4d4332;
+          --suc: #6daa45;
+          --suc-hl: #3a4435;
+          --sh-sm: 0 1px 2px oklch(0 0 0/0.2);
+          --sh-md: 0 4px 12px oklch(0 0 0/0.3);
+        }
+      }
+      *,
+      *::before,
+      *::after {
+        box-sizing: border-box;
+        margin: 0;
+        padding: 0;
+      }
+      html {
+        scroll-behavior: smooth;
+        -webkit-font-smoothing: antialiased;
+      }
+      body {
+        min-height: 100dvh;
+        font-family: "Inter", system-ui, sans-serif;
+        font-size: var(--text-base);
+        color: var(--tx);
+        background: var(--bg);
+        line-height: 1.7;
+      }
+      svg,
+      img {
+        display: block;
+        max-width: 100%;
+      }
+      input,
+      select,
+      button {
+        font: inherit;
+        color: inherit;
+      }
+      button {
+        cursor: pointer;
+        background: none;
+        border: none;
+      }
+      a,
+      button,
+      [role="button"],
+      input,
+      select {
+        transition:
+          color var(--tr),
+          background var(--tr),
+          border-color var(--tr),
+          box-shadow var(--tr);
+      }
+      :focus-visible {
+        outline: 2px solid var(--pri);
+        outline-offset: 3px;
+        border-radius: var(--r-sm);
+      }
+      .sr-only {
+        position: absolute;
+        width: 1px;
+        height: 1px;
+        padding: 0;
+        margin: -1px;
+        overflow: hidden;
+        clip: rect(0, 0, 0, 0);
+        white-space: nowrap;
+        border-width: 0;
+      }
+      @media (prefers-reduced-motion: reduce) {
+        *,
+        *::before,
+        *::after {
+          animation-duration: 0.01ms !important;
+          transition-duration: 0.01ms !important;
+        }
+      }
+      .app {
+        display: flex;
+        flex-direction: column;
+        min-height: 100dvh;
+      }
+      nav.topnav {
+        background: var(--sur);
+        border-bottom: 1px solid var(--bor);
+        position: sticky;
+        top: 0;
+        z-index: 100;
+        box-shadow: var(--sh-sm);
+      }
+      .nav-inner {
+        max-width: 1280px;
+        margin-inline: auto;
+        padding: 0 var(--sp6);
+        display: flex;
+        align-items: center;
+        height: 56px;
+        gap: var(--sp6);
+      }
+      .nav-logo {
+        display: flex;
+        align-items: center;
+        gap: var(--sp2);
+        font-weight: 700;
+        font-size: var(--text-sm);
+        color: var(--tx);
+        text-decoration: none;
+      }
+      .nav-links {
+        display: flex;
+        gap: var(--sp1);
+        margin-left: auto;
+      }
+      .nav-link {
+        display: flex;
+        align-items: center;
+        gap: var(--sp2);
+        padding: var(--sp2) var(--sp3);
+        border-radius: var(--r-md);
+        font-size: var(--text-sm);
+        font-weight: 500;
+        color: var(--tx-m);
+        text-decoration: none;
+        white-space: nowrap;
+      }
+      .nav-link:hover {
+        background: var(--sur-off);
+        color: var(--tx);
+      }
+      .nav-link.active {
+        background: var(--pri-hl);
+        color: var(--pri);
+      }
+      .btn-icon {
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        width: 36px;
+        height: 36px;
+        border-radius: var(--r-md);
+        color: var(--tx-m);
+      }
+      .btn-icon:hover {
+        background: var(--sur-off);
+        color: var(--tx);
+      }
+      main {
+        flex: 1;
+        max-width: 800px;
+        margin-inline: auto;
+        padding: var(--sp10) var(--sp6);
+        width: 100%;
+      }
+      .status-banner {
+        display: flex;
+        align-items: center;
+        gap: var(--sp3);
+        padding: var(--sp4) var(--sp5);
+        border-radius: var(--r-lg);
+        border: 1px solid var(--bor);
+        background: var(--sur);
+        margin-bottom: var(--sp8);
+        font-size: var(--text-sm);
+        box-shadow: var(--sh-sm);
+      }
+      .status-dot {
+        width: 10px;
+        height: 10px;
+        border-radius: var(--r-full);
+        flex-shrink: 0;
+        background: var(--tx-f);
+      }
+      .status-dot.ok {
+        background: var(--suc);
+      }
+      .status-dot.pulse {
+        animation: pulse 2s ease-in-out infinite;
+      }
+      @keyframes pulse {
+        0%,
+        100% {
+          opacity: 1;
+        }
+        50% {
+          opacity: 0.45;
+        }
+      }
+      .status-text {
+        color: var(--tx-m);
+      }
+      .status-text strong {
+        color: var(--tx);
+      }
+      .status-meta {
+        margin-left: auto;
+        font-size: var(--text-xs);
+        color: var(--tx-f);
+      }
+      .page-hdr {
+        margin-bottom: var(--sp8);
+      }
+      .page-hdr h1 {
+        font-size: var(--text-xl);
+        font-weight: 700;
+      }
+      .page-hdr p {
+        color: var(--tx-m);
+        margin-top: var(--sp2);
+        font-size: var(--text-sm);
+      }
+      .faq-controls {
+        display: flex;
+        flex-direction: column;
+        gap: var(--sp4);
+        margin-bottom: var(--sp6);
+      }
+      .faq-search-wrap {
+        position: relative;
+      }
+      .faq-search {
+        width: 100%;
+        padding: var(--sp3) var(--sp4) var(--sp3) 2.6rem;
+        border: 1px solid var(--bor);
+        border-radius: var(--r-md);
+        background: var(--sur);
+        font-size: var(--text-sm);
+      }
+      .faq-search:hover {
+        border-color: var(--pri);
+      }
+      .faq-search:focus {
+        outline: 2px solid var(--pri);
+        outline-offset: 2px;
+        border-color: var(--pri);
+      }
+      .search-icon {
+        position: absolute;
+        left: var(--sp3);
+        top: 50%;
+        transform: translateY(-50%);
+        color: var(--tx-f);
+        pointer-events: none;
+      }
+      .cat-tabs {
+        display: flex;
+        gap: var(--sp2);
+        flex-wrap: wrap;
+      }
+      .cat-tab {
+        padding: var(--sp2) var(--sp4);
+        border-radius: var(--r-full);
+        font-size: var(--text-xs);
+        font-weight: 600;
+        border: 1px solid var(--bor);
+        color: var(--tx-m);
+        background: var(--sur);
+      }
+      .cat-tab:hover {
+        border-color: var(--pri);
+        color: var(--pri);
+      }
+      .cat-tab.active {
+        background: var(--pri-hl);
+        border-color: var(--pri);
+        color: var(--pri);
+      }
+      .faq-section {
+        margin-bottom: var(--sp8);
+      }
+      .faq-section > h2 {
+        font-size: var(--text-lg);
+        font-weight: 700;
+        margin-bottom: var(--sp4);
+        padding-bottom: var(--sp3);
+        border-bottom: 1px solid var(--div);
+      }
+      .faq-list {
+        display: flex;
+        flex-direction: column;
+        gap: var(--sp2);
+      }
+      details.faq-item {
+        background: var(--sur);
+        border: 1px solid var(--bor);
+        border-radius: var(--r-lg);
+        overflow: hidden;
+      }
+      details.faq-item[open] {
+        box-shadow: var(--sh-sm);
+      }
+      summary.faq-q {
+        display: flex;
+        align-items: center;
+        gap: var(--sp3);
+        padding: var(--sp4) var(--sp5);
+        font-size: var(--text-sm);
+        font-weight: 600;
+        cursor: pointer;
+        list-style: none;
+        user-select: none;
+        color: var(--tx);
+      }
+      summary.faq-q::-webkit-details-marker {
+        display: none;
+      }
+      summary.faq-q:hover {
+        background: var(--sur-off);
+      }
+      .q-icon {
+        width: 20px;
+        height: 20px;
+        flex-shrink: 0;
+        color: var(--pri);
+      }
+      .chevron {
+        margin-left: auto;
+        width: 16px;
+        height: 16px;
+        flex-shrink: 0;
+        color: var(--tx-f);
+        transition: transform var(--tr);
+      }
+      details[open] summary .chevron {
+        transform: rotate(180deg);
+      }
+      .faq-a {
+        padding: 0 var(--sp5) var(--sp5) calc(var(--sp5) + 20px + var(--sp3));
+        font-size: var(--text-sm);
+        color: var(--tx-m);
+        line-height: 1.75;
+      }
+      .faq-a ul {
+        padding-left: var(--sp5);
+        margin-top: var(--sp2);
+      }
+      .faq-a li {
+        margin-bottom: var(--sp1);
+      }
+      .faq-a code {
+        background: var(--sur-off);
+        padding: 0.1em 0.4em;
+        border-radius: var(--r-sm);
+        font-family: ui-monospace, monospace;
+        font-size: 0.9em;
+      }
+      .faq-a strong {
+        color: var(--tx);
+        font-weight: 600;
+      }
+      .no-res {
+        padding: var(--sp12) 0;
+        text-align: center;
+        color: var(--tx-m);
+      }
+      .no-res p {
+        max-width: 40ch;
+        margin: 0.5rem auto 0;
+      }
+      .help-card {
+        background: var(--pri-hl);
+        border: 1px solid var(--pri);
+        border-radius: var(--r-xl);
+        padding: var(--sp8);
+        margin-top: var(--sp10);
+      }
+      .help-card h2 {
+        font-size: var(--text-lg);
+        font-weight: 700;
+        color: var(--pri);
+      }
+      .help-card p {
+        font-size: var(--text-sm);
+        color: var(--pri-h);
+        margin-top: var(--sp2);
+      }
+      .btn-help {
+        display: inline-flex;
+        align-items: center;
+        gap: var(--sp2);
+        margin-top: var(--sp4);
+        padding: var(--sp3) var(--sp6);
+        background: var(--pri);
+        color: #fff;
+        border-radius: var(--r-md);
+        font-size: var(--text-sm);
+        font-weight: 600;
+        text-decoration: none;
+      }
+      .btn-help:hover {
+        background: var(--pri-h);
+      }
+      @media (max-width: 768px) {
+        main {
+          padding: var(--sp6) var(--sp4);
+        }
+        .nav-link span {
+          display: none;
+        }
+      }
+    </style>
+  </head>
+  <body>
+    <div class="app">
+      <nav class="topnav" aria-label="Main navigation">
+        <div class="nav-inner">
+          <a href="../Active-Tickets-Dashboard/index.html" class="nav-logo"
+            ><svg
+              width="28"
+              height="28"
+              viewBox="0 0 28 28"
+              fill="none"
+              aria-hidden="true"
+            >
+              <rect width="28" height="28" rx="7" fill="var(--pri)" />
+              <rect x="7" y="13" width="14" height="2" rx="1" fill="#fff" />
+              <rect x="13" y="7" width="2" height="14" rx="1" fill="#fff" />
+              <circle
+                cx="14"
+                cy="14"
+                r="5"
+                stroke="#fff"
+                stroke-width="1.5"
+                fill="none"
+              /></svg
+            ><span>IT Helpdesk</span></a
+          >
+          <nav class="nav-links">
+            <a href="../Active-Tickets-Dashboard/index.html" class="nav-link"
+              ><i data-lucide="layout-dashboard" width="16" height="16"></i
+              ><span>Dashboard</span></a
+            >
+            <a href="../create-ticket-page/create-ticket.html" class="nav-link"
+              ><i data-lucide="plus-circle" width="16" height="16"></i
+              ><span>Submit Ticket</span></a
+            >
+            <a href="../departments-directory/departments.html" class="nav-link"
+              ><i data-lucide="building-2" width="16" height="16"></i
+              ><span>Departments</span></a
+            >
+            <a href="faq.html" class="nav-link active" aria-current="page"
+              ><i data-lucide="help-circle" width="16" height="16"></i
+              ><span>FAQ</span></a
+            >
+          </nav>
+          <button
+            class="btn-icon"
+            data-theme-toggle
+            aria-label="Toggle dark mode"
+          >
+            <i data-lucide="sun" width="18" height="18"></i>
+          </button>
+        </div>
+      </nav>
+      <main id="main-content">
+        <a href="#main-content" class="sr-only">Skip to main content</a>
+        <div
+          class="status-banner"
+          id="status-banner"
+          role="status"
+          aria-live="polite"
+        >
+          <div class="status-dot pulse" id="status-dot"></div>
+          <p class="status-text" id="status-text">
+            <strong>Checking system status…</strong>
+          </p>
+          <span class="status-meta" id="status-meta"></span>
+        </div>
+        <div class="page-hdr">
+          <h1>IT Knowledge Base &amp; FAQ</h1>
+          <p>
+            Find answers to common technical issues before submitting a ticket —
+            <strong>Rukhma</strong>
+          </p>
+        </div>
+        <div class="faq-controls">
+          <div class="faq-search-wrap">
+            <svg
+              class="search-icon"
+              width="16"
+              height="16"
+              viewBox="0 0 24 24"
+              fill="none"
+              stroke="currentColor"
+              stroke-width="2"
+              aria-hidden="true"
+            >
+              <circle cx="11" cy="11" r="8" />
+              <path d="m21 21-4.35-4.35" />
+            </svg>
+            <input
+              type="search"
+              class="faq-search"
+              id="faq-search"
+              placeholder="Search FAQs…"
+              aria-label="Search frequently asked questions"
+            />
+          </div>
+          <div class="cat-tabs" role="tablist" aria-label="FAQ categories">
+            <button
+              class="cat-tab active"
+              data-cat="all"
+              role="tab"
+              aria-selected="true"
+            >
+              All Topics
+            </button>
+            <button
+              class="cat-tab"
+              data-cat="network"
+              role="tab"
+              aria-selected="false"
+            >
+              Network &amp; VPN
+            </button>
+            <button
+              class="cat-tab"
+              data-cat="accounts"
+              role="tab"
+              aria-selected="false"
+            >
+              Accounts
+            </button>
+            <button
+              class="cat-tab"
+              data-cat="hardware"
+              role="tab"
+              aria-selected="false"
+            >
+              Hardware
+            </button>
+            <button
+              class="cat-tab"
+              data-cat="software"
+              role="tab"
+              aria-selected="false"
+            >
+              Software
+            </button>
+          </div>
+        </div>
+
+        <div id="faq-content">
+          <div id="faq-dynamic-list"></div>
+          <div class="no-res" id="no-res" style="display: none" role="alert">
+            <i
+              data-lucide="search-x"
+              width="44"
+              height="44"
+              style="margin: 0 auto var(--sp4); color: var(--tx-f)"
+            ></i>
+            <h3 style="margin-bottom: var(--sp2)">No results found</h3>
+            <p>
+              Try different keywords or
+              <a
+                href="../create-ticket-page/create-ticket.html"
+                style="color: var(--pri)"
+                >submit a ticket</a
+              >.
+            </p>
+          </div>
+        </div>
+
+        <div class="help-card" role="complementary">
+          <h2>Still need help?</h2>
+          <p>Our IT team responds within 2 hours during business hours.</p>
+          <a href="../create-ticket-page/create-ticket.html" class="btn-help"
+            ><i data-lucide="ticket" width="16" height="16"></i>Submit a Support
+            Ticket</a
+          >
+        </div>
+      </main>
     </div>
-    <div class="cat-tabs" role="tablist" aria-label="FAQ categories">
-      <button class="cat-tab active" data-cat="all" role="tab" aria-selected="true">All Topics</button>
-      <button class="cat-tab" data-cat="network" role="tab" aria-selected="false">Network &amp; VPN</button>
-      <button class="cat-tab" data-cat="accounts" role="tab" aria-selected="false">Accounts</button>
-      <button class="cat-tab" data-cat="hardware" role="tab" aria-selected="false">Hardware</button>
-      <button class="cat-tab" data-cat="software" role="tab" aria-selected="false">Software</button>
-    </div>
-  </div>
-  
-  <div id="faq-content">
-    <div id="faq-dynamic-list"></div>
-    <div class="no-res" id="no-res" style="display:none" role="alert">
-      <i data-lucide="search-x" width="44" height="44" style="margin:0 auto var(--sp4);color:var(--tx-f)"></i>
-      <h3 style="margin-bottom:var(--sp2)">No results found</h3>
-      <p>Try different keywords or <a href="create-ticket.html" style="color:var(--pri)">submit a ticket</a>.</p>
-    </div>
-  </div>
 
-  <div class="help-card" role="complementary">
-    <h2>Still need help?</h2>
-    <p>Our IT team responds within 2 hours during business hours.</p>
-    <a href="create-ticket.html" class="btn-help"><i data-lucide="ticket" width="16" height="16"></i>Submit a Support Ticket</a>
-  </div>
-</main>
-</div>
+    <!-- ВАЖНО: Правильное подключение библиотеки Supabase и файла конфигурации -->
+    <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+    <script src="../supabase-config.js"></script>
 
-<!-- ВАЖНО: Правильное подключение библиотеки Supabase и файла конфигурации -->
-<script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
-<script src="supabase-config.js"></script>
+    <script>
+      (function () {
+        const btn = document.querySelector("[data-theme-toggle]"),
+          root = document.documentElement;
+        let d = matchMedia("(prefers-color-scheme:dark)").matches;
+        root.setAttribute("data-theme", d ? "dark" : "light");
+        function upd() {
+          if (!btn) return;
+          btn.innerHTML = d
+            ? '<svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="5"/><path d="M12 1v2M12 21v2M4.22 4.22l1.42 1.42M18.36 18.36l1.42 1.42M1 12h2M21 12h2M4.22 19.78l1.42-1.42M18.36 5.64l1.42-1.42"/></svg>'
+            : '<svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M21 12.79A9 9 0 1 1 11.21 3 7 7 0 0 0 21 12.79z"/></svg>';
+          btn.setAttribute(
+            "aria-label",
+            d ? "Switch to light mode" : "Switch to dark mode",
+          );
+        }
+        upd();
+        if (btn)
+          btn.addEventListener("click", () => {
+            d = !d;
+            root.setAttribute("data-theme", d ? "dark" : "light");
+            upd();
+          });
+      })();
 
-<script>
-(function(){const btn=document.querySelector('[data-theme-toggle]'),root=document.documentElement;let d=matchMedia('(prefers-color-scheme:dark)').matches;root.setAttribute('data-theme',d?'dark':'light');function upd(){if(!btn)return;btn.innerHTML=d?'<svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="5"/><path d="M12 1v2M12 21v2M4.22 4.22l1.42 1.42M18.36 18.36l1.42 1.42M1 12h2M21 12h2M4.22 19.78l1.42-1.42M18.36 5.64l1.42-1.42"/></svg>':'<svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M21 12.79A9 9 0 1 1 11.21 3 7 7 0 0 0 21 12.79z"/></svg>';btn.setAttribute('aria-label',d?'Switch to light mode':'Switch to dark mode');}upd();if(btn)btn.addEventListener('click',()=>{d=!d;root.setAttribute('data-theme',d?'dark':'light');upd();});})();
+      async function loadStatus() {
+        const dot = document.getElementById("status-dot"),
+          txt = document.getElementById("status-text"),
+          meta = document.getElementById("status-meta");
+        try {
+          const rows = await db.select("tickets", "?select=status");
+          const open = rows.filter((t) => t.status === "Open").length,
+            inProg = rows.filter((t) => t.status === "In-Progress").length;
+          dot.className = "status-dot ok";
+          const lvl = open > 10 ? "High" : open > 5 ? "Moderate" : "Normal";
+          txt.innerHTML = `<strong>System Online</strong> — ${open} open ticket${open !== 1 ? "s" : ""}, ${inProg} in progress. Volume: <strong>${lvl}</strong>.`;
+          meta.textContent = `Updated ${new Date().toLocaleTimeString()}`;
+        } catch (e) {
+          dot.className = "status-dot";
+          txt.innerHTML =
+            "<strong>Status unavailable</strong> — configure Supabase credentials to enable.";
+        }
+      }
 
-async function loadStatus(){
-  const dot=document.getElementById('status-dot'),txt=document.getElementById('status-text'),meta=document.getElementById('status-meta');
-  try{
-    const rows=await db.select('tickets','?select=status');
-    const open=rows.filter(t=>t.status==='Open').length,inProg=rows.filter(t=>t.status==='In-Progress').length;
-    dot.className='status-dot ok';
-    const lvl=open>10?'High':open>5?'Moderate':'Normal';
-    txt.innerHTML=`<strong>System Online</strong> — ${open} open ticket${open!==1?'s':''}, ${inProg} in progress. Volume: <strong>${lvl}</strong>.`;
-    meta.textContent=`Updated ${new Date().toLocaleTimeString()}`;
-  }catch(e){
-    dot.className='status-dot';
-    txt.innerHTML='<strong>Status unavailable</strong> — configure Supabase credentials to enable.';
-  }
-}
+      function applyFilter() {
+        const q = document
+            .getElementById("faq-search")
+            .value.toLowerCase()
+            .trim(),
+          cat = document.querySelector(".cat-tab.active").dataset.cat;
+        let vis = 0;
+        document.querySelectorAll(".faq-section").forEach((sec) => {
+          const catMatch = cat === "all" || sec.dataset.cat === cat;
+          if (!catMatch) {
+            sec.style.display = "none";
+            return;
+          }
+          let sv = 0;
+          sec.querySelectorAll("details.faq-item").forEach((d) => {
+            const show = !q || d.textContent.toLowerCase().includes(q);
+            d.closest("li").style.display = show ? "" : "none";
+            if (show) sv++;
+          });
+          sec.style.display = sv > 0 ? "" : "none";
+          vis += sv;
+        });
+        document.getElementById("no-res").style.display =
+          vis === 0 ? "block" : "none";
+        lucide.createIcons();
+      }
 
-function applyFilter(){
-  const q=document.getElementById('faq-search').value.toLowerCase().trim(),cat=document.querySelector('.cat-tab.active').dataset.cat;
-  let vis=0;
-  document.querySelectorAll('.faq-section').forEach(sec=>{
-    const catMatch=cat==='all'||sec.dataset.cat===cat;
-    if(!catMatch){sec.style.display='none';return;}
-    let sv=0;
-    sec.querySelectorAll('details.faq-item').forEach(d=>{
-      const show=!q||d.textContent.toLowerCase().includes(q);
-      d.closest('li').style.display=show?'':'none';
-      if(show)sv++;
-    });
-    sec.style.display=sv>0?'':'none';
-    vis+=sv;
-  });
-  document.getElementById('no-res').style.display=vis===0?'block':'none';
-  lucide.createIcons();
-}
+      document
+        .getElementById("faq-search")
+        .addEventListener("input", applyFilter);
+      document.querySelectorAll(".cat-tab").forEach((t) => {
+        t.addEventListener("click", function () {
+          document.querySelectorAll(".cat-tab").forEach((x) => {
+            x.classList.remove("active");
+            x.setAttribute("aria-selected", "false");
+          });
+          this.classList.add("active");
+          this.setAttribute("aria-selected", "true");
+          applyFilter();
+        });
+      });
 
-document.getElementById('faq-search').addEventListener('input',applyFilter);
-document.querySelectorAll('.cat-tab').forEach(t=>{
-  t.addEventListener('click',function(){
-    document.querySelectorAll('.cat-tab').forEach(x=>{x.classList.remove('active');x.setAttribute('aria-selected','false');});
-    this.classList.add('active');this.setAttribute('aria-selected','true');
-    applyFilter();
-  });
-});
+      async function loadFaqs() {
+        try {
+          const faqs = await db.select("faqs", "?select=*");
+          const container = document.getElementById("faq-dynamic-list");
 
-async function loadFaqs() {
-  try {
-    const faqs = await db.select('faqs', '?select=*');
-    const container = document.getElementById('faq-dynamic-list');
-    
-    const categories = {
-      network: 'Network & VPN',
-      accounts: 'Accounts & Passwords',
-      hardware: 'Hardware',
-      software: 'Software'
-    };
+          const categories = {
+            network: "Network & VPN",
+            accounts: "Accounts & Passwords",
+            hardware: "Hardware",
+            software: "Software",
+          };
 
-    let html = '';
-    for (const cat in categories) {
-      const catFaqs = faqs.filter(f => f.category === cat);
-      if (catFaqs.length === 0) continue;
+          let html = "";
+          for (const cat in categories) {
+            const catFaqs = faqs.filter((f) => f.category === cat);
+            if (catFaqs.length === 0) continue;
 
-      html += `
+            html += `
       <section class="faq-section" data-cat="${cat}">
         <h2>${categories[cat]}</h2>
         <ul class="faq-list" role="list">
-          ${catFaqs.map(f => `
+          ${catFaqs
+            .map(
+              (f) => `
             <li>
               <details class="faq-item">
                 <summary class="faq-q">
@@ -171,23 +785,24 @@ async function loadFaqs() {
                 <div class="faq-a">${f.answer}</div>
               </details>
             </li>
-          `).join('')}
+          `,
+            )
+            .join("")}
         </ul>
       </section>`;
-    }
+          }
 
-    container.innerHTML = html;
-    lucide.createIcons();
-    applyFilter();
-    
-  } catch (e) {
-    console.error("Error loading FAQs:", e);
-  }
-}
+          container.innerHTML = html;
+          lucide.createIcons();
+          applyFilter();
+        } catch (e) {
+          console.error("Error loading FAQs:", e);
+        }
+      }
 
-loadStatus();
-loadFaqs();
-lucide.createIcons();
-</script>
-</body>
+      loadStatus();
+      loadFaqs();
+      lucide.createIcons();
+    </script>
+  </body>
 </html>
