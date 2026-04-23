@@ -1,42 +1,714 @@
-<!DOCTYPE html>
-<html lang="en">
-<head>
-  <meta charset="UTF-8">
-  <title>Submit Ticket</title>
-  <link rel="stylesheet" href="styles.css">
-</head>
-<body>
-
-  <main class="container">
-    <h1>Submit IT Ticket</h1>
-
-    <form id="ticketForm">
-
-      <label for="title">Issue Title</label>
-      <input type="text" id="title" required>
-
-      <label for="description">Description</label>
-      <textarea id="description" required></textarea>
-
-      <label for="priority">Priority</label>
-      <select id="priority">
-        <option value="Low">Low</option>
-        <option value="Medium">Medium</option>
-        <option value="High">High</option>
-      </select>
-
-      <label for="department">Department</label>
-      <select id="department" required>
-        <option value="">-- Select Department --</option>
-      </select>
-
-      <button type="submit">Submit Ticket</button>
-
-    </form>
-  </main>
-
-  <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js"></script>
-  <script src="app.js"></script>
-
-</body>
+<!doctype html>
+<html lang="en" data-theme="light">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>IT Helpdesk — Submit a Ticket</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link
+      href="https://fonts.googleapis.com/css2?family=Inter:wght@300..700&display=swap"
+      rel="stylesheet"
+    />
+    <script src="https://unpkg.com/lucide@latest/dist/umd/lucide.min.js"></script>
+    <style>
+      :root,
+      [data-theme="light"] {
+        --text-xs: clamp(0.75rem, 0.7rem + 0.25vw, 0.875rem);
+        --text-sm: clamp(0.875rem, 0.8rem + 0.35vw, 1rem);
+        --text-base: clamp(1rem, 0.95rem + 0.25vw, 1.125rem);
+        --text-lg: clamp(1.125rem, 1rem + 0.75vw, 1.5rem);
+        --text-xl: clamp(1.5rem, 1.2rem + 1.25vw, 2.25rem);
+        --sp1: 0.25rem;
+        --sp2: 0.5rem;
+        --sp3: 0.75rem;
+        --sp4: 1rem;
+        --sp5: 1.25rem;
+        --sp6: 1.5rem;
+        --sp8: 2rem;
+        --sp10: 2.5rem;
+        --sp12: 3rem;
+        --sp16: 4rem;
+        --r-sm: 0.375rem;
+        --r-md: 0.5rem;
+        --r-lg: 0.75rem;
+        --r-xl: 1rem;
+        --r-full: 9999px;
+        --tr: 180ms cubic-bezier(0.16, 1, 0.3, 1);
+        --bg: #f7f6f2;
+        --sur: #f9f8f5;
+        --sur2: #fbfbf9;
+        --sur-off: #f3f0ec;
+        --bor: rgba(40, 37, 29, 0.12);
+        --div: rgba(40, 37, 29, 0.08);
+        --tx: #28251d;
+        --tx-m: #7a7974;
+        --tx-f: #bab9b4;
+        --pri: #01696f;
+        --pri-h: #0c4e54;
+        --pri-hl: #cedcd8;
+        --suc: #437a22;
+        --suc-hl: #d4dfcc;
+        --err: #a12c7b;
+        --err-hl: #e0ced7;
+        --sh-sm: 0 1px 2px oklch(0.2 0.01 80/0.06);
+        --sh-md: 0 4px 12px oklch(0.2 0.01 80/0.08);
+      }
+      [data-theme="dark"] {
+        --bg: #171614;
+        --sur: #1c1b19;
+        --sur2: #201f1d;
+        --sur-off: #1d1c1a;
+        --bor: rgba(205, 204, 202, 0.1);
+        --div: rgba(205, 204, 202, 0.06);
+        --tx: #cdccca;
+        --tx-m: #797876;
+        --tx-f: #5a5957;
+        --pri: #4f98a3;
+        --pri-h: #227f8b;
+        --pri-hl: #313b3b;
+        --suc: #6daa45;
+        --suc-hl: #3a4435;
+        --err: #d163a7;
+        --err-hl: #4c3d46;
+        --sh-sm: 0 1px 2px oklch(0 0 0/0.2);
+        --sh-md: 0 4px 12px oklch(0 0 0/0.3);
+      }
+      @media (prefers-color-scheme: dark) {
+        :root:not([data-theme]) {
+          --bg: #171614;
+          --sur: #1c1b19;
+          --sur2: #201f1d;
+          --sur-off: #1d1c1a;
+          --bor: rgba(205, 204, 202, 0.1);
+          --div: rgba(205, 204, 202, 0.06);
+          --tx: #cdccca;
+          --tx-m: #797876;
+          --tx-f: #5a5957;
+          --pri: #4f98a3;
+          --pri-h: #227f8b;
+          --pri-hl: #313b3b;
+          --suc: #6daa45;
+          --suc-hl: #3a4435;
+          --err: #d163a7;
+          --err-hl: #4c3d46;
+          --sh-sm: 0 1px 2px oklch(0 0 0/0.2);
+          --sh-md: 0 4px 12px oklch(0 0 0/0.3);
+        }
+      }
+      *,
+      *::before,
+      *::after {
+        box-sizing: border-box;
+        margin: 0;
+        padding: 0;
+      }
+      html {
+        scroll-behavior: smooth;
+        -webkit-font-smoothing: antialiased;
+      }
+      body {
+        min-height: 100dvh;
+        font-family: "Inter", system-ui, sans-serif;
+        font-size: var(--text-base);
+        color: var(--tx);
+        background: var(--bg);
+        line-height: 1.6;
+      }
+      svg,
+      img {
+        display: block;
+        max-width: 100%;
+      }
+      input,
+      select,
+      button,
+      textarea {
+        font: inherit;
+        color: inherit;
+      }
+      button {
+        cursor: pointer;
+        background: none;
+        border: none;
+      }
+      a,
+      button,
+      [role="button"],
+      input,
+      select,
+      textarea {
+        transition:
+          color var(--tr),
+          background var(--tr),
+          border-color var(--tr),
+          box-shadow var(--tr);
+      }
+      :focus-visible {
+        outline: 2px solid var(--pri);
+        outline-offset: 3px;
+        border-radius: var(--r-sm);
+      }
+      .sr-only {
+        position: absolute;
+        width: 1px;
+        height: 1px;
+        padding: 0;
+        margin: -1px;
+        overflow: hidden;
+        clip: rect(0, 0, 0, 0);
+        white-space: nowrap;
+        border-width: 0;
+      }
+      @media (prefers-reduced-motion: reduce) {
+        *,
+        *::before,
+        *::after {
+          animation-duration: 0.01ms !important;
+          transition-duration: 0.01ms !important;
+        }
+      }
+      .app {
+        display: flex;
+        flex-direction: column;
+        min-height: 100dvh;
+      }
+      nav.topnav {
+        background: var(--sur);
+        border-bottom: 1px solid var(--bor);
+        position: sticky;
+        top: 0;
+        z-index: 100;
+        box-shadow: var(--sh-sm);
+      }
+      .nav-inner {
+        max-width: 1280px;
+        margin-inline: auto;
+        padding: 0 var(--sp6);
+        display: flex;
+        align-items: center;
+        height: 56px;
+        gap: var(--sp6);
+      }
+      .nav-logo {
+        display: flex;
+        align-items: center;
+        gap: var(--sp2);
+        font-weight: 700;
+        font-size: var(--text-sm);
+        color: var(--tx);
+        text-decoration: none;
+      }
+      .nav-links {
+        display: flex;
+        gap: var(--sp1);
+        margin-left: auto;
+      }
+      .nav-link {
+        display: flex;
+        align-items: center;
+        gap: var(--sp2);
+        padding: var(--sp2) var(--sp3);
+        border-radius: var(--r-md);
+        font-size: var(--text-sm);
+        font-weight: 500;
+        color: var(--tx-m);
+        text-decoration: none;
+        white-space: nowrap;
+      }
+      .nav-link:hover {
+        background: var(--sur-off);
+        color: var(--tx);
+      }
+      .nav-link.active {
+        background: var(--pri-hl);
+        color: var(--pri);
+      }
+      .btn-icon {
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        width: 36px;
+        height: 36px;
+        border-radius: var(--r-md);
+        color: var(--tx-m);
+      }
+      .btn-icon:hover {
+        background: var(--sur-off);
+        color: var(--tx);
+      }
+      main {
+        flex: 1;
+        max-width: 680px;
+        margin-inline: auto;
+        padding: var(--sp10) var(--sp6);
+        width: 100%;
+      }
+      .page-hdr {
+        margin-bottom: var(--sp8);
+      }
+      .page-hdr h1 {
+        font-size: var(--text-xl);
+        font-weight: 700;
+      }
+      .page-hdr p {
+        color: var(--tx-m);
+        margin-top: var(--sp2);
+        font-size: var(--text-sm);
+      }
+      .success-banner {
+        display: none;
+        align-items: center;
+        gap: var(--sp3);
+        background: var(--suc-hl);
+        border: 1px solid var(--suc);
+        border-radius: var(--r-lg);
+        padding: var(--sp4) var(--sp5);
+        margin-bottom: var(--sp6);
+        color: var(--suc);
+        font-weight: 600;
+        font-size: var(--text-sm);
+      }
+      .success-banner.show {
+        display: flex;
+      }
+      .form-card {
+        background: var(--sur);
+        border: 1px solid var(--bor);
+        border-radius: var(--r-xl);
+        padding: var(--sp8);
+        box-shadow: var(--sh-md);
+      }
+      fieldset {
+        border: none;
+        padding: 0;
+        margin: 0;
+      }
+      legend {
+        font-size: var(--text-lg);
+        font-weight: 700;
+        margin-bottom: var(--sp6);
+      }
+      .fg {
+        display: flex;
+        flex-direction: column;
+        gap: var(--sp2);
+        margin-bottom: var(--sp5);
+      }
+      label {
+        font-size: var(--text-sm);
+        font-weight: 600;
+        color: var(--tx);
+      }
+      .req {
+        color: var(--err);
+        margin-left: 2px;
+      }
+      .fi {
+        padding: var(--sp3) var(--sp4);
+        border: 1px solid var(--bor);
+        border-radius: var(--r-md);
+        background: var(--sur2);
+        font-size: var(--text-sm);
+        width: 100%;
+      }
+      .fi:hover {
+        border-color: var(--pri);
+      }
+      .fi:focus {
+        outline: 2px solid var(--pri);
+        outline-offset: 2px;
+        border-color: var(--pri);
+      }
+      textarea.fi {
+        resize: vertical;
+        min-height: 130px;
+        line-height: 1.6;
+      }
+      .hint {
+        font-size: var(--text-xs);
+        color: var(--tx-m);
+      }
+      .ferr {
+        font-size: var(--text-xs);
+        color: var(--err);
+        display: none;
+      }
+      .fg.has-err .ferr {
+        display: block;
+      }
+      .fg.has-err .fi {
+        border-color: var(--err);
+      }
+      .form-foot {
+        margin-top: var(--sp8);
+        display: flex;
+        gap: var(--sp3);
+        justify-content: flex-end;
+        align-items: center;
+      }
+      .btn-pri {
+        display: flex;
+        align-items: center;
+        gap: var(--sp2);
+        padding: var(--sp3) var(--sp8);
+        background: var(--pri);
+        color: #fff;
+        border-radius: var(--r-md);
+        font-size: var(--text-sm);
+        font-weight: 600;
+      }
+      .btn-pri:hover {
+        background: var(--pri-h);
+      }
+      .btn-pri:disabled {
+        opacity: 0.55;
+        cursor: not-allowed;
+      }
+      .btn-sec {
+        padding: var(--sp3) var(--sp6);
+        border: 1px solid var(--bor);
+        border-radius: var(--r-md);
+        font-size: var(--text-sm);
+        font-weight: 500;
+      }
+      .btn-sec:hover {
+        background: var(--sur-off);
+      }
+      @media (max-width: 768px) {
+        main {
+          padding: var(--sp6) var(--sp4);
+        }
+        .nav-link span {
+          display: none;
+        }
+        .form-card {
+          padding: var(--sp5);
+        }
+      }
+    </style>
+  </head>
+  <body>
+    <div class="app">
+      <nav class="topnav" aria-label="Main navigation">
+        <div class="nav-inner">
+          <a href="index.html" class="nav-logo">
+            <svg
+              width="28"
+              height="28"
+              viewBox="0 0 28 28"
+              fill="none"
+              aria-hidden="true"
+            >
+              <rect width="28" height="28" rx="7" fill="var(--pri)" />
+              <rect x="7" y="13" width="14" height="2" rx="1" fill="#fff" />
+              <rect x="13" y="7" width="2" height="14" rx="1" fill="#fff" />
+              <circle
+                cx="14"
+                cy="14"
+                r="5"
+                stroke="#fff"
+                stroke-width="1.5"
+                fill="none"
+              />
+            </svg>
+            <span>IT Helpdesk</span>
+          </a>
+          <nav class="nav-links">
+            <a href="index.html" class="nav-link"
+              ><i data-lucide="layout-dashboard" width="16" height="16"></i
+              ><span>Dashboard</span></a
+            >
+            <a
+              href="create-ticket.html"
+              class="nav-link active"
+              aria-current="page"
+              ><i data-lucide="plus-circle" width="16" height="16"></i
+              ><span>Submit Ticket</span></a
+            >
+            <a href="departments.html" class="nav-link"
+              ><i data-lucide="building-2" width="16" height="16"></i
+              ><span>Departments</span></a
+            >
+            <a href="faq.html" class="nav-link"
+              ><i data-lucide="help-circle" width="16" height="16"></i
+              ><span>FAQ</span></a
+            >
+          </nav>
+          <button
+            class="btn-icon"
+            data-theme-toggle
+            aria-label="Toggle dark mode"
+          >
+            <i data-lucide="sun" width="18" height="18"></i>
+          </button>
+        </div>
+      </nav>
+      <main id="main-content">
+        <a href="#main-content" class="sr-only">Skip to main content</a>
+        <div class="page-hdr">
+          <h1>Submit a Ticket</h1>
+          <p>
+            Report an IT issue and our team will respond as soon as possible —
+            <strong>Ivan</strong>
+          </p>
+        </div>
+        <div
+          class="success-banner"
+          id="success-banner"
+          role="alert"
+          aria-live="polite"
+        >
+          <svg
+            width="20"
+            height="20"
+            viewBox="0 0 24 24"
+            fill="none"
+            stroke="currentColor"
+            stroke-width="2.5"
+            aria-hidden="true"
+          >
+            <path d="M20 6 9 17l-5-5" />
+          </svg>
+          <span id="success-msg">Ticket submitted!</span>
+        </div>
+        <div class="form-card">
+          <form id="tform" novalidate>
+            <fieldset>
+              <legend>New Support Ticket</legend>
+              <div class="fg" id="fg-title">
+                <label for="title"
+                  >Issue Title
+                  <span class="req" aria-hidden="true">*</span></label
+                >
+                <input
+                  type="text"
+                  id="title"
+                  name="title"
+                  class="fi"
+                  placeholder="e.g. Cannot connect to VPN"
+                  required
+                  maxlength="200"
+                  aria-required="true"
+                  aria-describedby="title-err title-hint"
+                />
+                <span class="hint" id="title-hint"
+                  >Brief, clear summary of the problem</span
+                >
+                <span class="ferr" id="title-err" role="alert"
+                  >Please enter an issue title (min 3 characters)</span
+                >
+              </div>
+              <div class="fg" id="fg-desc">
+                <label for="description"
+                  >Description
+                  <span class="req" aria-hidden="true">*</span></label
+                >
+                <textarea
+                  id="description"
+                  name="description"
+                  class="fi"
+                  placeholder="Describe the issue in detail — include error messages, steps you've already tried, and how many people are affected."
+                  required
+                  aria-required="true"
+                  aria-describedby="desc-err"
+                ></textarea>
+                <span class="ferr" id="desc-err" role="alert"
+                  >Please describe the issue in at least 10 characters</span
+                >
+              </div>
+              <div class="fg" id="fg-prio">
+                <label for="priority"
+                  >Priority <span class="req" aria-hidden="true">*</span></label
+                >
+                <select
+                  id="priority"
+                  name="priority"
+                  class="fi"
+                  required
+                  aria-required="true"
+                  aria-describedby="prio-err"
+                >
+                  <option value="">Select priority…</option>
+                  <option value="Low">Low — minor inconvenience</option>
+                  <option value="Medium">Medium — affecting my work</option>
+                  <option value="High">High — blocking work completely</option>
+                </select>
+                <span class="ferr" id="prio-err" role="alert"
+                  >Please select a priority level</span
+                >
+              </div>
+              <div class="fg" id="fg-dept">
+                <label for="department"
+                  >Department
+                  <span class="req" aria-hidden="true">*</span></label
+                >
+                <select
+                  id="department"
+                  name="department_id"
+                  class="fi"
+                  required
+                  aria-required="true"
+                  aria-describedby="dept-err dept-hint"
+                >
+                  <option value="">Loading departments…</option>
+                </select>
+                <span class="hint" id="dept-hint">Loaded from database</span>
+                <span class="ferr" id="dept-err" role="alert"
+                  >Please select your department</span
+                >
+              </div>
+              <div class="fg" id="fg-name">
+                <label for="submitter"
+                  >Your Name
+                  <span class="req" aria-hidden="true">*</span></label
+                >
+                <input
+                  type="text"
+                  id="submitter"
+                  name="submitter_name"
+                  class="fi"
+                  placeholder="e.g. Jane Smith"
+                  required
+                  maxlength="100"
+                  aria-required="true"
+                  aria-describedby="name-err"
+                />
+                <span class="ferr" id="name-err" role="alert"
+                  >Please enter your name</span
+                >
+              </div>
+            </fieldset>
+            <div class="form-foot">
+              <button
+                type="button"
+                class="btn-sec"
+                onclick="
+                  document.getElementById('tform').reset();
+                  document
+                    .querySelectorAll('.fg.has-err')
+                    .forEach((e) => e.classList.remove('has-err'));
+                "
+              >
+                Clear
+              </button>
+              <button type="submit" class="btn-pri" id="submit-btn">
+                <i data-lucide="send" width="16" height="16"></i>Submit Ticket
+              </button>
+            </div>
+          </form>
+        </div>
+      </main>
+    </div>
+    <script src="supabase-config.js"></script>
+    <script>
+      (function () {
+        const btn = document.querySelector("[data-theme-toggle]"),
+          root = document.documentElement;
+        let d = matchMedia("(prefers-color-scheme:dark)").matches;
+        root.setAttribute("data-theme", d ? "dark" : "light");
+        function upd() {
+          if (!btn) return;
+          btn.innerHTML = d
+            ? '<svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="5"/><path d="M12 1v2M12 21v2M4.22 4.22l1.42 1.42M18.36 18.36l1.42 1.42M1 12h2M21 12h2M4.22 19.78l1.42-1.42M18.36 5.64l1.42-1.42"/></svg>'
+            : '<svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M21 12.79A9 9 0 1 1 11.21 3 7 7 0 0 0 21 12.79z"/></svg>';
+          btn.setAttribute(
+            "aria-label",
+            d ? "Switch to light mode" : "Switch to dark mode",
+          );
+        }
+        upd();
+        if (btn)
+          btn.addEventListener("click", () => {
+            d = !d;
+            root.setAttribute("data-theme", d ? "dark" : "light");
+            upd();
+          });
+      })();
+      async function loadDepts() {
+        const sel = document.getElementById("department");
+        try {
+          const rows = await db.select(
+            "departments",
+            "?select=id,name&order=name.asc",
+          );
+          sel.innerHTML = '<option value="">Select your department…</option>';
+          rows.forEach((r) => {
+            const o = document.createElement("option");
+            o.value = r.id;
+            o.textContent = r.name;
+            sel.appendChild(o);
+          });
+          document.getElementById("dept-hint").textContent =
+            rows.length + " departments loaded";
+        } catch (e) {
+          sel.innerHTML =
+            '<option value="">Error loading — check config</option>';
+        }
+      }
+      function chk(fgId, id, fn) {
+        const i = document.getElementById(id),
+          g = document.getElementById(fgId),
+          ok = fn(i.value);
+        g.classList.toggle("has-err", !ok);
+        return ok;
+      }
+      document.getElementById("tform").addEventListener("submit", async (e) => {
+        e.preventDefault();
+        const v = [
+          chk("fg-title", "title", (v) => v.trim().length >= 3),
+          chk("fg-desc", "description", (v) => v.trim().length >= 10),
+          chk("fg-prio", "priority", (v) => v !== ""),
+          chk("fg-dept", "department", (v) => v !== ""),
+          chk("fg-name", "submitter", (v) => v.trim().length >= 2),
+        ];
+        if (v.includes(false)) {
+          document.querySelector(".fg.has-err .fi").focus();
+          return;
+        }
+        const btn = document.getElementById("submit-btn");
+        btn.disabled = true;
+        btn.innerHTML =
+          '<svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" style="animation:spin 1s linear infinite"><path d="M21 12a9 9 0 1 1-6.22-8.56"/></svg> Submitting…';
+        if (!document.getElementById("_spin")) {
+          const s = document.createElement("style");
+          s.id = "_spin";
+          s.textContent = "@keyframes spin{to{transform:rotate(360deg)}}";
+          document.head.appendChild(s);
+        }
+        try {
+          await db.insert("tickets", {
+            title: document.getElementById("title").value.trim(),
+            description: document.getElementById("description").value.trim(),
+            priority: document.getElementById("priority").value,
+            department_id: parseInt(
+              document.getElementById("department").value,
+            ),
+            submitter_name: document.getElementById("submitter").value.trim(),
+            status: "Open",
+          });
+          const name = document.getElementById("submitter").value.trim();
+          const title = document.getElementById("title").value.trim();
+          const b = document.getElementById("success-banner");
+          document.getElementById("success-msg").textContent =
+            `Ticket submitted! Thanks ${name} — we'll look into "${title}" shortly.`;
+          b.classList.add("show");
+          b.scrollIntoView({ behavior: "smooth", block: "nearest" });
+          document.getElementById("tform").reset();
+          await loadDepts();
+          setTimeout(() => b.classList.remove("show"), 6000);
+        } catch (err) {
+          alert("Submission failed: " + err.message);
+        } finally {
+          btn.disabled = false;
+          btn.innerHTML =
+            '<svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><line x1="22" y1="2" x2="11" y2="13"/><polygon points="22 2 15 22 11 13 2 9 22 2"/></svg> Submit Ticket';
+        }
+      });
+      loadDepts();
+    </script>
+    <script>
+      lucide.createIcons();
+    </script>
+  </body>
 </html>

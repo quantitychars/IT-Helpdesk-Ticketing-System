@@ -28,9 +28,9 @@
     </a>
     <nav class="nav-links">
       <a href="index.html"         class="nav-link active" aria-current="page"><i data-lucide="layout-dashboard" width="16" height="16"></i><span>Dashboard</span></a>
-      <a href="create-ticket.html" class="nav-link"><i data-lucide="plus-circle" width="16" height="16"></i><span>Submit Ticket</span></a>
-      <a href="departments.html"   class="nav-link"><i data-lucide="building-2" width="16" height="16"></i><span>Departments</span></a>
-      <a href="faq.html"           class="nav-link"><i data-lucide="help-circle" width="16" height="16"></i><span>FAQ</span></a>
+      <a href="../create-ticket-page/create-ticket.html" class="nav-link"><i data-lucide="plus-circle" width="16" height="16"></i><span>Submit Ticket</span></a>
+      <a href="../departments-directory/departments2.html"   class="nav-link"><i data-lucide="building-2" width="16" height="16"></i><span>Departments</span></a>
+      <a href="../faq/faq.html"           class="nav-link"><i data-lucide="help-circle" width="16" height="16"></i><span>FAQ</span></a>
     </nav>
     <button class="btn-icon" data-theme-toggle aria-label="Toggle dark mode">
       <i data-lucide="sun" width="18" height="18"></i>
@@ -182,7 +182,7 @@ function renderRows(tickets){
   if(!tickets.length){
     tbody.innerHTML=`<tr><td colspan="7" class="empty-cell">
       <h3>No tickets found</h3>
-      <p>Try a different filter or <a href="create-ticket.html" style="color:var(--pri)">submit a new ticket</a>.</p>
+      <p>Try a different filter or <a href="../create-ticket-page/create-ticket.html" style="color:var(--pri)">submit a new ticket</a>.</p>
     </td></tr>`;
     return;
   }
