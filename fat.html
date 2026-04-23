@@ -1,0 +1,181 @@
+<!DOCTYPE html>
+<html lang="en" data-theme="light">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+<title>IT Helpdesk — FAQ & Knowledge Base</title>
+
+https://fonts.googleapis.com
+https://fonts.gstatic.com
+https://fonts.googleapis.com/css2?family=Inter:wght@300..700&display=swap
+
+https://unpkg.com/lucide@latest/dist/umd/lucide.min.jsscript>
+
+<style>
+
+:root,[data-theme="light"]{--text-xs:clamp(.75rem,.7rem + .25vw,.875rem);--text-sm:clamp(.875rem,.8rem + .35vw,1rem);--text-base:clamp(1rem,.95rem + .25vw,1.125rem);--text-lg:clamp(1.125rem,1rem + .75vw,1.5rem);--text-xl:clamp(1.5rem,1.2rem + 1.25vw,2.25rem);--sp1:.25rem;--sp2:.5rem;--sp3:.75rem;--sp4:1rem;--sp5:1.25rem;--sp6:1.5rem;--sp8:2rem;--sp10:2.5rem;--sp12:3rem;--sp16:4rem;--r-sm:.375rem;--r-md:.5rem;--r-lg:.75rem;--r-xl:1rem;--r-full:9999px;--tr:180ms cubic-bezier(.16,1,.3,1);--bg:#f7f6f2;--sur:#f9f8f5;--sur2:#fbfbf9;--sur-off:#f3f0ec;--bor:rgba(40,37,29,.12);--div:rgba(40,37,29,.08);--tx:#28251d;--tx-m:#7a7974;--tx-f:#bab9b4;--pri:#01696f;--pri-h:#0c4e54;--pri-hl:#cedcd8}
+*{box-sizing:border-box}
+body{margin:0;font-family:Inter,system-ui,sans-serif;background:var(--bg);color:var(--tx)}
+main{max-width:800px;margin:auto;padding:3rem 1.5rem}
+.faq-section{margin-bottom:2rem}
+.faq-list{display:flex;flex-direction:column;gap:.5rem}
+details{border:1px solid var(--bor);border-radius:.75rem;background:white}
+summary{cursor:pointer;padding:1rem;font-weight:600;display:flex;align-items:center;gap:.75rem}
+.faq-a{padding:1rem;color:var(--tx-m)}
+.no-res{text-align:center;padding:3rem 0;color:var(--tx-m)}
+.cat-tab.active{background:var(--pri-hl);color:var(--pri)}
+</style>
+</head>
+
+<body>
+
+<main>
+
+<h1>IT Knowledge Base & FAQ</h1>
+
+
+<input type="search" id="faq-search" placeholder="Search FAQs…">
+
+<div class="cat-tabs">
+  <button class="cat-tab active" data-cat="all">All Topics</button>
+  <button class="cat-tab" data-cat="network">Network & VPN</button>
+  <button class="cat-tab" data-cat="accounts">Accounts</button>
+  <button class="cat-tab" data-cat="hardware">Hardware</button>
+  <button class="cat-tab" data-cat="software">Software</button>
+</div>
+
+
+<div id="faq-content">
+
+ 
+  <div id="faq-dynamic-list"></div>
+
+ 
+  <div class="no-res" id="no-res" style="display:none" role="alert">
+    <i data-lucide="search-x" width="44" height="44"></i>
+    <h3>No results found</h3>
+    <p>
+      Try different keywords or
+      create-ticket.htmlsubmit a ticket</a>.
+    </p>
+  </div>
+
+</div>
+
+</main>
+
+supabase-config.js
+
+<script>
+
+async function loadStatus(){
+  try{
+    const rows = await db.select('tickets','?select=status');
+    console.log(rows);
+  }catch(e){
+    console.warn('Status unavailable');
+  }
+}
+
+
+function applyFilter() {
+  const q = document.getElementById('faq-search').value.toLowerCase().trim();
+  const cat = document.querySelector('.cat-tab.active').dataset.cat;
+  const sects = document.querySelectorAll('.faq-section');
+
+  let visible = 0;
+
+  sects.forEach(sec => {
+    const catMatch = cat === 'all' || sec.dataset.cat === cat;
+    if (!catMatch) {
+      sec.style.display = 'none';
+      return;
+    }
+
+    let shown = 0;
+    sec.querySelectorAll('details').forEach(d => {
+      const show = !q || d.textContent.toLowerCase().includes(q);
+      d.parentElement.style.display = show ? '' : 'none';
+      if (show) shown++;
+    });
+
+    sec.style.display = shown ? '' : 'none';
+    visible += shown;
+  });
+
+  document.getElementById('no-res').style.display =
+    visible === 0 ? 'block' : 'none';
+
+  lucide.createIcons();
+}
+
+document.getElementById('faq-search')
+  .addEventListener('input', applyFilter);
+
+document.querySelectorAll('.cat-tab').forEach(tab => {
+  tab.addEventListener('click', () => {
+    document.querySelectorAll('.cat-tab')
+      .forEach(t => t.classList.remove('active'));
+    tab.classList.add('active');
+    applyFilter();
+  });
+});
+
+async function loadFaqs() {
+  try {
+    const faqs = await db.select('faqs', '?select=*');
+    const container = document.getElementById('faq-dynamic-list');
+
+    const categories = {
+      network: 'Network & VPN',
+      accounts: 'Accounts & Passwords',
+      hardware: 'Hardware',
+      software: 'Software'
+    };
+
+    let html = '';
+
+    for (const cat in categories) {
+      const list = faqs.filter(f => f.category === cat);
+      if (!list.length) continue;
+
+      html += `
+        <section class="faq-section" data-cat="${cat}">
+          <h2>${categories[cat]}</h2>
+          <ul class="faq-list">
+            ${list.map(f => `
+              <li>
+                <details>
+                  <summary>
+                    <i data-lucide="${f.icon}"></i>
+                    ${f.question}
+                  </summary>
+                  <div class="faq-a">
+                    ${f.answer}
+                  </div>
+                </details>
+              </li>
+            `).join('')}
+          </ul>
+        </section>
+      `;
+    }
+
+    container.innerHTML = html;
+    lucide.createIcons();
+    applyFilter();
+
+  } catch (e) {
+    console.error('Error loading FAQs:', e);
+  }
+}
+
+
+loadStatus();
+loadFaqs();
+lucide.createIcons();
+</script>
+
+</body>
+</html>
